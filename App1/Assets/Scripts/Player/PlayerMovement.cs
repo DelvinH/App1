@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
     private string turnAxisName;
     private float movementAxisValue;
     private float turnAxisValue;
-    private float turnSpeedScale = .1f;
 
     public float moveAcceleration;
     public float turnAcceleration;
@@ -71,12 +70,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Turn()
     {
-        Vector3 turn = transform.up * turnAxisValue * turnAcceleration * rigidbody.velocity.magnitude * turnSpeedScale;
+        Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
         rigidbody.AddTorque(turn);
 
-        if (rigidbody.angularVelocity.magnitude >= maxTurnSpeed * turnSpeedScale)
-            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * turnSpeedScale;
+        if (rigidbody.angularVelocity.magnitude >= maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed))
+            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
 
         /*if (Mathf.Abs(turnAxisValue) < 0.1f)
