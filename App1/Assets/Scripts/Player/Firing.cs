@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class Firing : MonoBehaviour {
     public Rigidbody ProjectileType;
-	public float FiringDelay;
-	public float lastFire = 0;
+	public float FiringDelay = 5f;
+	public float lastFire = 0f;
     public Transform firingtransform1;
     public Transform firingtransform2;
     public float firingForce;
+	public float maxTTL = 10;
 
 	void Awake() {
-		firingtransform1 = Instantiate(gameObject.transform);
-		firingtransform2 = Instantiate(gameObject.transform);
-		firingtransform1.Translate (Vector3.right * 3);
-		firingtransform2.Translate (Vector3.left * 3);
+		//firingtransform1 = Instantiate(gameObject.transform);
+		//firingtransform2 = Instantiate(gameObject.transform);
+		//firingtransform1.Translate (Vector3.right * 3);
+		//firingtransform2.Translate (Vector3.left * 3);
 	}
 
     // Use this for initialization
@@ -24,8 +25,8 @@ public class Firing : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-		if (Input.GetKey ("Fire1")) {
-			if (lastFire < Time.realtimeSinceStartup + FiringDelay) {
+		if (Input.GetAxis ("Fire1") > 0) {
+			if ((Time.realtimeSinceStartup - lastFire) > FiringDelay) {
 				FireProjectile ();
 			}
 		}
@@ -34,11 +35,13 @@ public class Firing : MonoBehaviour {
     bool FireProjectile() {
         Rigidbody Projectile1;
 		Rigidbody Projectile2;
-		Projectile1 = Instantiate (ProjectileType, firingtransform1) as Rigidbody;
-		Projectile2 = Instantiate (ProjectileType, firingtransform2) as Rigidbody;
-		Projectile1.AddRelativeForce (Vector3.forward * firingForce);
-		Projectile2.AddRelativeForce (Vector3.forward * firingForce);
+		Projectile1 = Instantiate (ProjectileType, firingtransform1.position, transform.rotation) as Rigidbody;
+		Projectile2 = Instantiate (ProjectileType, firingtransform2.position, transform.rotation) as Rigidbody;
+		Projectile1.velocity = (firingtransform1.forward * firingForce);
+		Projectile2.velocity = (firingtransform2.forward * firingForce);
 		lastFire = Time.realtimeSinceStartup;
+		Destroy (Projectile1.gameObject, maxTTL);
+		Destroy (Projectile2.gameObject, maxTTL);
 		return true;
 
     }
