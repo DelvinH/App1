@@ -385,10 +385,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1632113581}
-  - component: {fileID: 1632113580}
   - component: {fileID: 1632113582}
-  - component: {fileID: 1632113583}
   - component: {fileID: 1632113584}
+  - component: {fileID: 1632113583}
+  - component: {fileID: 1632113580}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -408,9 +408,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAcceleration: 1
-  turnAcceleration: 2
-  maxMoveSpeed: 2.5
-  maxTurnSpeed: 0.5
+  turnAcceleration: 4
+  maxMoveSpeed: 4
+  maxTurnSpeed: 0.8
 --- !u!4 &1632113581
 Transform:
   m_ObjectHideFlags: 0
@@ -418,7 +418,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1632113579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 928552592}
@@ -453,14 +453,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0e05b684876e449b8b1f5699b55cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ProjectileType: {fileID: 54595875893004476, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
+  projectileType: {fileID: 54595875893004476, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
     type: 2}
-  FiringDelay: 1
-  lastFire: 0
-  firingtransform1: {fileID: 2071053082}
-  firingtransform2: {fileID: 1956655238}
-  firingForce: 8
-  maxTTL: 10
+  fireTransformLeft: {fileID: 2071053082}
+  fireTransformRight: {fileID: 1956655238}
+  fireSpeed: 10
+  fireRate: 1
+  minSpeedMultiplier: 0.9
 --- !u!136 &1632113584
 CapsuleCollider:
   m_ObjectHideFlags: 0

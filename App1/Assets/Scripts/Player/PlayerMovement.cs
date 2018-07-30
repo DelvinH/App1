@@ -78,8 +78,8 @@ public class PlayerMovement : MonoBehaviour
             rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
 
-        /*if (Mathf.Abs(turnAxisValue) < 0.1f)
-            rigidbody.angularVelocity = Vector3.zero;*/
+        if (Mathf.Abs(turnAxisValue) < 0.1f)
+            rigidbody.angularVelocity = Vector3.zero;
     }
 }
 
