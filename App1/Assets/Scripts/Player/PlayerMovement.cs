@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     public float turnAcceleration;
     public float maxMoveSpeed;
     public float maxTurnSpeed;
+    public float angularDrag;
     
 
 
@@ -53,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
         Turn();
     }
 
-    private void Move()
+    private void Move()//edit for joystick
     {
         Vector3 movement = transform.forward * movementAxisValue * moveAcceleration;
 
@@ -68,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
-    private void Turn()
+    private void Turn()//edit for joystick and make more responsive
     {
         Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
@@ -78,8 +79,11 @@ public class PlayerMovement : MonoBehaviour
             rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
 
+        //if (Mathf.Abs(turnAxisValue) < 0.1f)
+        //rigidbody.angularVelocity = Vector3.zero;
+
         if (Mathf.Abs(turnAxisValue) < 0.1f)
-            rigidbody.angularVelocity = Vector3.zero;
+            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;
     }
 }
 
