@@ -194,7 +194,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402546, guid: 28a688b0ffa9bf24d9bd7cf88270aea3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.3
+      value: -0.6
       objectReference: {fileID: 0}
     - target: {fileID: 402546, guid: 28a688b0ffa9bf24d9bd7cf88270aea3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -261,7 +261,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1418559453697162, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
@@ -458,8 +458,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAcceleration: 2
   turnAcceleration: 4
-  maxMoveSpeed: 7
-  maxTurnSpeed: 1
+  maxMoveSpeed: 6
+  maxTurnSpeed: 1.5
   angularDrag: 1.1
 --- !u!4 &1632113581
 Transform:
@@ -522,7 +522,7 @@ CapsuleCollider:
   m_Radius: 0.15
   m_Height: 2.4
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: -0.3}
+  m_Center: {x: 0, y: 0, z: -0.6}
 --- !u!1 &1956655237
 GameObject:
   m_ObjectHideFlags: 0
@@ -701,7 +701,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

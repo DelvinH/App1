@@ -30,13 +30,13 @@ public class DestructibleObject : MonoBehaviour
 			return;
 		
 		health = Mathf.Max(0, health - amount);
-		if (health == 0)
+		if (health <= 0)
 			objectBreak(); 
 	}
 
 	public void objectBreak()
     {
-
+        Destroy(gameObject);
 	}
 
 	public void healDamage(float amount)

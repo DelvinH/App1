@@ -1945,9 +1945,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   torpedoMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   maxDamage: 50
   minDamage: 40
+  torpedoDamage: 50
   maxLifetime: 5
   explosionRadius: 1
 --- !u!136 &136154839168942742

@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         Turn();
+        Debug.Log(rigidbody.velocity.magnitude);
     }
 
     private void Move()//edit for joystick

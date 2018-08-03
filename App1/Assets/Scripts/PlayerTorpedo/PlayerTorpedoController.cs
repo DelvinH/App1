@@ -12,23 +12,23 @@ public class PlayerTorpedoController : MonoBehaviour
 	public float explosionRadius;
 	private bool activated = false;
 
-	public void Activate ()
+	void OnEnable()
     {
-		Destroy(gameObject, maxLifetime);
-		torpedoDamage = Random.Range(minDamage, maxDamage);
-		activated = true;
-	}
-
+        Destroy(gameObject, maxLifetime);
+        torpedoDamage = Random.Range(minDamage, maxDamage);
+        activated = true;
+    }
     // Use this for initialization
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Time.time > 0.2)
+            gameObject.SetActive(true);
     }
 
 
