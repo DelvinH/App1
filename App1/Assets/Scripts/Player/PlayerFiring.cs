@@ -9,7 +9,7 @@ public class PlayerFiring : MonoBehaviour
     public Transform fireTransformRight;
     public float fireSpeed;
     public float fireRate;
-    public float minSpeedMultiplier;//
+    public float minSpeedMultiplier;//varies torpedo speed
 
     private float timeSinceLastFireLeft;
     private float timeSinceLastFireRight;

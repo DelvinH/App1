@@ -11,11 +11,10 @@ public class PlayerMovement : MonoBehaviour
     private float turnAxisValue;
 
     public float moveAcceleration;
-    public float turnAcceleration;
+    public float turnSpeed;
     public float maxMoveSpeed;
-    public float maxTurnSpeed;
-    public float angularDrag;
     public float turnTiltAngle;
+    public float tiltSpeed;
     
 
 
@@ -74,7 +73,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
 
-        Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
+        /*Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
         rigidbody.AddTorque(turn);
 
@@ -82,13 +81,17 @@ public class PlayerMovement : MonoBehaviour
             rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
 
-        //if (Mathf.Abs(turnAxisValue) < 0.1f)
-        //rigidbody.angularVelocity = Vector3.zero;
+        if (Mathf.Abs(turnAxisValue) < 0.1f)
+        rigidbody.angularVelocity = Vector3.zero;
 
         if (Mathf.Abs(turnAxisValue) < 0.1f)
-            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;
+           rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;*/
 
-        
+        float turn = turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed) * Time.deltaTime;
+        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+
+        rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
+
     }
 }
 

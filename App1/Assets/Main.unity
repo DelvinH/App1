@@ -212,6 +212,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 402546, guid: 28a688b0ffa9bf24d9bd7cf88270aea3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28a688b0ffa9bf24d9bd7cf88270aea3, type: 3}
   m_IsPrefabAsset: 0
@@ -220,7 +224,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 402546, guid: 28a688b0ffa9bf24d9bd7cf88270aea3,
     type: 3}
   m_PrefabInternal: {fileID: 96503352}
---- !u!1001 &596117738
+--- !u!1001 &278977138
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -352,7 +356,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1604101290
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -434,6 +438,7 @@ GameObject:
   - component: {fileID: 1632113584}
   - component: {fileID: 1632113583}
   - component: {fileID: 1632113580}
+  - component: {fileID: 1632113585}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -453,11 +458,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveAcceleration: 2
-  turnAcceleration: 4
+  turnSpeed: 80
   maxMoveSpeed: 6
-  maxTurnSpeed: 1.5
-  angularDrag: 1.1
-  turnTiltAngle: 90
+  turnTiltAngle: 20
+  tiltSpeed: 1
 --- !u!4 &1632113581
 Transform:
   m_ObjectHideFlags: 0
@@ -520,6 +524,24 @@ CapsuleCollider:
   m_Height: 2.4
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.6}
+--- !u!95 &1632113585
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632113579}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2c30d0dc5cbe4d4438a3d862db177a24, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1956655237
 GameObject:
   m_ObjectHideFlags: 0

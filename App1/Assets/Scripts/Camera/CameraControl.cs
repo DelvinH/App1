@@ -27,12 +27,12 @@ public class CameraControl : MonoBehaviour
 
     private void Move()
     {
-        getDesiredPosiiton();
+        GetDesiredPosiiton();
 
         transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, dampTime  / targetRigidbody.velocity.magnitude);
     }
 
-    private void getDesiredPosiiton()
+    private void GetDesiredPosiiton()
     {
         desiredPosition = targetRigidbody.position + targetRigidbody.velocity.normalized * Mathf.Clamp(targetRigidbody.velocity.magnitude, 0f, maxDistanceInFront);
     }

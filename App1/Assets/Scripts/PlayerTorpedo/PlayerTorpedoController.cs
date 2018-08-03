@@ -8,10 +8,11 @@ public class PlayerTorpedoController : MonoBehaviour
     public float ignoreMaskNumber;
 	public float maxDamage;
 	public float minDamage;
-	private float torpedoDamage;
 	public float maxLifetime;
 	public float explosionRadius;
+    public bool homing;
 
+    private float torpedoDamage;
 
     
     void Start()
@@ -23,7 +24,10 @@ public class PlayerTorpedoController : MonoBehaviour
     
     void Update()
     {
-        
+        if (homing)
+        {
+            TrackTarget();
+        }
     }
 
 
@@ -38,23 +42,27 @@ public class PlayerTorpedoController : MonoBehaviour
 			Rigidbody target = targets [i].GetComponent<Rigidbody>();
 			if (!target)
 				continue;
-			torpedoImpact(target);
-			torpedoEffects();
+			TorpedoImpact(target);
+			TorpedoEffects();
 		}
 		Destroy(gameObject);
 	}
 
-	private void torpedoImpact(Rigidbody target)
+	private void TorpedoImpact(Rigidbody target)
     {
 		DestructibleObject targetObject = target.GetComponent<DestructibleObject>();
 		if (!targetObject) 
 			return;
-		targetObject.takeDamage(torpedoDamage);
+		targetObject.TakeDamage(torpedoDamage);
 	}
 
-	private void torpedoEffects()
+	private void TorpedoEffects()
     {
 
 	}
 
+    private void TrackTarget()
+    {
+
+    }
 }

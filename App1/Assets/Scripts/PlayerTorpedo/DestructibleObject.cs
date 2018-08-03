@@ -19,27 +19,27 @@ public class DestructibleObject : MonoBehaviour
 		
 	}
 
-	public float getHealth()
+	public float GetHealth()
     {
 		return health;
 	}
 
-	public void takeDamage(float amount)
+	public void TakeDamage(float amount)
     {
 		if (amount <= 0)
 			return;
 		
 		health = Mathf.Max(0, health - amount);
 		if (health <= 0)
-			objectBreak(); 
+			ObjectBreak(); 
 	}
 
-	public void objectBreak()
+	public void ObjectBreak()
     {
         Destroy(gameObject);
 	}
 
-	public void healDamage(float amount)
+	public void HealDamage(float amount)
     {
 		if(amount <= 0)
 			return;
