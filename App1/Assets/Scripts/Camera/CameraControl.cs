@@ -34,7 +34,7 @@ public class CameraControl : MonoBehaviour
 
     private void getDesiredPosiiton()
     {
-        desiredPosition = targetRigidbody.position + targetRigidbody.velocity.normalized * Mathf.Clamp(targetRigidbody.velocity.magnitude, -1f, maxDistanceInFront);
+        desiredPosition = targetRigidbody.position + targetRigidbody.velocity.normalized * Mathf.Clamp(targetRigidbody.velocity.magnitude, 0f, maxDistanceInFront);
     }
 }
 

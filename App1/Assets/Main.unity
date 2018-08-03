@@ -259,10 +259,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 1418559453697162, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
   m_IsPrefabAsset: 0
@@ -461,6 +457,7 @@ MonoBehaviour:
   maxMoveSpeed: 6
   maxTurnSpeed: 1.5
   angularDrag: 1.1
+  turnTiltAngle: 90
 --- !u!4 &1632113581
 Transform:
   m_ObjectHideFlags: 0
@@ -507,7 +504,7 @@ MonoBehaviour:
     type: 2}
   fireTransformLeft: {fileID: 2071053082}
   fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 14
+  fireSpeed: 10
   fireRate: 1.5
   minSpeedMultiplier: 0.9
 --- !u!136 &1632113584
@@ -545,7 +542,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1956655237}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08, y: 0, z: 0.85}
+  m_LocalPosition: {x: 0.08, y: 0, z: 0.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1632113581}
@@ -639,7 +636,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2071053081}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.08, y: 0, z: 0.85}
+  m_LocalPosition: {x: -0.08, y: 0, z: 0.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1632113581}

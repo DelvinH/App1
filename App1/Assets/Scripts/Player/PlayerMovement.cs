@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     public float maxMoveSpeed;
     public float maxTurnSpeed;
     public float angularDrag;
+    public float turnTiltAngle;
     
 
 
@@ -52,7 +53,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         Turn();
-        Debug.Log(rigidbody.velocity.magnitude);
     }
 
     private void Move()//edit for joystick
@@ -65,13 +65,15 @@ public class PlayerMovement : MonoBehaviour
         if (rigidbody.velocity.magnitude >= maxMoveSpeed)
             rigidbody.velocity = rigidbody.velocity.normalized * maxMoveSpeed;
 
-        /*if(movementAxisValue < 0.1f*/
+        /*if(movementAxisValue < 0.1f)*/
             rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;
         
     }
 
     private void Turn()//edit for joystick and make more responsive
     {
+
+
         Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
         rigidbody.AddTorque(turn);
@@ -85,6 +87,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Mathf.Abs(turnAxisValue) < 0.1f)
             rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;
+
+        
     }
 }
 

@@ -5,36 +5,31 @@ using UnityEngine;
 public class PlayerTorpedoController : MonoBehaviour
 {
 	public LayerMask torpedoMask;
+    public float ignoreMaskNumber;
 	public float maxDamage;
 	public float minDamage;
 	private float torpedoDamage;
 	public float maxLifetime;
 	public float explosionRadius;
-	private bool activated = false;
 
-	void OnEnable()
+
+    
+    void Start()
     {
         Destroy(gameObject, maxLifetime);
         torpedoDamage = Random.Range(minDamage, maxDamage);
-        activated = true;
-    }
-    // Use this for initialization
-    void Start()
-    {
-        
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        if (Time.time > 0.2)
-            gameObject.SetActive(true);
+        
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-		if (!activated)
+		if (!gameObject.activeSelf || other.gameObject.layer == ignoreMaskNumber)
 			return;
 		
 		Collider[] targets = Physics.OverlapSphere(transform.position, explosionRadius, torpedoMask);
