@@ -10,13 +10,17 @@ public class PlayerMovement : MonoBehaviour
     private float movementAxisValue;
     private float turnAxisValue;
 
+    private bool atSurface;
+    private bool diving;
+    private bool surfacing;
+    private float timeSinceStart;
+
     public float moveAcceleration;
     public float turnSpeed;
     public float maxMoveSpeed;
-    public float turnTiltAngle;
-    public float tiltSpeed;
-    
 
+    public float changeDepthSpeed;
+    public float changeDepthTime;
 
     private void Awake()
     {
@@ -27,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
     {
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
+
+        atSurface = true;
+        diving = false;
+        surfacing = false;
     }
 
     /*private void OnDisable()
@@ -52,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         Turn();
+        ToggleDepth();
     }
 
     private void Move()//edit for joystick
@@ -64,12 +73,24 @@ public class PlayerMovement : MonoBehaviour
         if (rigidbody.velocity.magnitude >= maxMoveSpeed)
             rigidbody.velocity = rigidbody.velocity.normalized * maxMoveSpeed;
 
-        /*if(movementAxisValue < 0.1f)*/
-            rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;
-        
+        rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;//prevents drifting
+
+        if (Mathf.Abs(movementAxisValue) < 0.1f && rigidbody.velocity.magnitude < 0.5f)
+            rigidbody.velocity = Vector3.zero;
+
+        if (atSurface)
+        {
+            //SurfaceAudio
+        }
+        else if (!atSurface)
+        {
+            //SubmergedAudio
+        }
+
+        //Debug.Log(rigidbody.velocity.magnitude);
     }
 
-    private void Turn()//edit for joystick and make more responsive
+    private void Turn()
     {
 
 
@@ -92,6 +113,79 @@ public class PlayerMovement : MonoBehaviour
 
         rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
 
+    }
+
+    private void ToggleDepth()
+    {
+        if (Input.GetButton("Fire2") && atSurface && (!diving && !surfacing))
+        {
+            diving = true;
+            timeSinceStart = Time.time;
+            Debug.Log("Fire2");
+        }
+        else if (Input.GetButton("Fire2") && !atSurface && (!diving && !surfacing))
+        {
+            surfacing = true;
+            timeSinceStart = Time.time;
+            Debug.Log("Fire2");
+        }
+       
+
+        if (diving)
+        {
+            Dive();
+        }
+        else if (surfacing)
+        {
+            Surface();
+        }
+    }
+
+    private void Dive()
+    {
+        Vector3 diveMovement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//Negative makes submarine go down
+
+        atSurface = false;
+
+        //Audio
+
+        if (Time.time - timeSinceStart < changeDepthTime)
+        {
+            rigidbody.MovePosition(rigidbody.position + diveMovement);
+        }
+        else if (Time.time - timeSinceStart > changeDepthTime)
+        {
+            diving = false;
+            surfacing = false;
+        }
+    }
+
+    private void Surface()
+    {
+        float timeElapsed = Time.time;
+
+        Vector3 surfaceMovement = transform.up * changeDepthSpeed * Time.deltaTime;
+
+        if (Time.time - timeSinceStart < changeDepthTime)
+        {
+            rigidbody.MovePosition(rigidbody.position + surfaceMovement);
+        }
+        else if (Time.time - timeSinceStart > changeDepthTime)
+        {
+            diving = false;
+            surfacing = false;
+
+            atSurface = true;
+
+            //Audio
+        }
+    }
+
+
+
+    public bool getChangingDepth()
+    {
+        return diving || surfacing;
     }
 }
 

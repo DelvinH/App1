@@ -17,28 +17,28 @@ public class PlayerFiring : MonoBehaviour
     private bool rightIsReady;
 
 
-    void OnEnable()
+    private void OnEnable()
     {
         //possible ammo indicator
     }
 
-    void Start()
+    private void Start()
     {
         leftIsReady = false;
         rightIsReady = false;
     }
 
     
-    void Update()
+    private void Update()
     {
         leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
         rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
 
-		if (Input.GetButtonDown("Fire1") && leftIsReady)
+        if (Input.GetButtonDown("Fire1") && leftIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth())
         { 
 			FireLeft();
             timeSinceLastFireLeft = Time.time;
-		} else if (Input.GetButtonDown("Fire1") && rightIsReady)
+		} else if (Input.GetButtonDown("Fire1") && rightIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth())
         {
             FireRight();
             timeSinceLastFireRight = Time.time;
@@ -51,7 +51,7 @@ public class PlayerFiring : MonoBehaviour
         }
     }
     
-    void FireLeft()
+    private void FireLeft()
     {
 		Rigidbody projectileLeft = Instantiate(projectileType, fireTransformLeft.position, transform.rotation) as Rigidbody;
 		projectileLeft.velocity = fireTransformLeft.forward * fireSpeed * Random.Range(minSpeedMultiplier, 1);
@@ -59,7 +59,7 @@ public class PlayerFiring : MonoBehaviour
         //Audio
     }
 
-    void FireRight()
+    private void FireRight()
     {
         Rigidbody projectileRight = Instantiate(projectileType, fireTransformRight.position, transform.rotation) as Rigidbody;
         projectileRight.velocity = fireTransformRight.forward * fireSpeed * Random.Range(minSpeedMultiplier, 1);

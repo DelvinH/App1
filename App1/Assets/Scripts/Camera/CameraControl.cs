@@ -23,13 +23,16 @@ public class CameraControl : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Debug.Log(moveVelocity.magnitude);
     }
 
     private void Move()
     {
         GetDesiredPosiiton();
 
-        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, dampTime  / targetRigidbody.velocity.magnitude);
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, Mathf.Min(dampTime / targetRigidbody.velocity.magnitude, dampTime));
+
+        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
     }
 
     private void GetDesiredPosiiton()
