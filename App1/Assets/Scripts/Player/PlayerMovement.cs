@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour
     private string turnAxisName;
     private float movementAxisValue;
     private float turnAxisValue;
+    private float turnVelocity;
+    private float turn;
 
     private bool atSurface;
     private bool diving;
@@ -16,8 +18,9 @@ public class PlayerMovement : MonoBehaviour
     private float timeSinceStart;
 
     public float moveAcceleration;
+    public float turnAcceleration;
     public float turnSpeed;
-    public float maxMoveSpeed;
+    public float moveSpeed;
 
     public float changeDepthSpeed;
     public float changeDepthTime;
@@ -35,6 +38,8 @@ public class PlayerMovement : MonoBehaviour
         atSurface = true;
         diving = false;
         surfacing = false;
+
+        turn = 0f;
     }
 
     /*private void OnDisable()
@@ -70,12 +75,12 @@ public class PlayerMovement : MonoBehaviour
         rigidbody.AddForce(movement);
 
 
-        if (rigidbody.velocity.magnitude >= maxMoveSpeed)
-            rigidbody.velocity = rigidbody.velocity.normalized * maxMoveSpeed;
+        if (rigidbody.velocity.magnitude >= moveSpeed)
+            rigidbody.velocity = rigidbody.velocity.normalized * moveSpeed;
 
         rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;//prevents drifting
 
-        if (Mathf.Abs(movementAxisValue) < 0.1f && rigidbody.velocity.magnitude < 0.5f)
+        if (Mathf.Abs(movementAxisValue) < 0.01f && rigidbody.velocity.magnitude < 0.01f)
             rigidbody.velocity = Vector3.zero;
 
         if (atSurface)
@@ -102,18 +107,25 @@ public class PlayerMovement : MonoBehaviour
             rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
 
-        if (Mathf.Abs(turnAxisValue) < 0.1f)
+        if (Mathf.Abs(turnAxisValue) < 0.01f)
         rigidbody.angularVelocity = Vector3.zero;
 
-        if (Mathf.Abs(turnAxisValue) < 0.1f)
+        if (Mathf.Abs(turnAxisValue) < 0.01f)
            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;*/
 
-        float turn = turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed) * Time.deltaTime;
+        //turn = turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed) * Time.deltaTime;
+        turn = Mathf.SmoothDamp(turn, turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), ref turnVelocity, 1 / turnAcceleration);
+        
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
 
         rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
 
+        //Debug.Log(turn);
+        //Debug.Log(turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed));
+               
     }
+
+    
 
     private void ToggleDepth()
     {
@@ -121,13 +133,13 @@ public class PlayerMovement : MonoBehaviour
         {
             diving = true;
             timeSinceStart = Time.time;
-            Debug.Log("Fire2");
+            //Debug.Log("Fire2");
         }
         else if (Input.GetButton("Fire2") && !atSurface && (!diving && !surfacing))
         {
             surfacing = true;
             timeSinceStart = Time.time;
-            Debug.Log("Fire2");
+            //Debug.Log("Fire2");
         }
        
 

@@ -28,21 +28,39 @@ public class PlayerFiring : MonoBehaviour
         rightIsReady = false;
     }
 
-    
+
     private void Update()
     {
         leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
         rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
-
-        if (Input.GetButtonDown("Fire1") && leftIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth())
-        { 
-			FireLeft();
+        if (Input.GetButtonDown("Fire1") && leftIsReady && rightIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth())//randomizes the side that fires if both are ready
+        {
+            float rand = Random.value - 0.5f;
+            if (rand <= 0)
+            {
+                FireLeft();
+                timeSinceLastFireLeft = Time.time;
+                //Debug.Log("firedleft");
+            }
+            else if (rand > 0)
+            {
+                FireRight();
+                timeSinceLastFireRight = Time.time;
+                //Debug.Log("firedright");
+            }
+            //Debug.Log(rand + "rand");
+        }
+        else if ((Input.GetButtonDown("Fire1") && leftIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth()))
+        {
+            FireLeft();
             timeSinceLastFireLeft = Time.time;
-		} else if (Input.GetButtonDown("Fire1") && rightIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth())
+            //Debug.Log("firedleft");
+        }
+        else if ((Input.GetButtonDown("Fire1") && rightIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth()))
         {
             FireRight();
             timeSinceLastFireRight = Time.time;
-
+            //Debug.Log("firedright");
         }
         else
         {

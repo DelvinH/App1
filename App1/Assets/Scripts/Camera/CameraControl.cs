@@ -4,40 +4,62 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 { 
-    public float dampTime;
-    public float maxDistanceInFront;
+    public float positionDampSpeed;
+    public float angleDampSpeed;
+    //public float maxDistanceInFront;
+    public GameObject target;
 
-    private Camera camera;
+    public float cameraDistance;
+    public float cameraAngle;
+    public float cameraHeight;
+
+    private Transform cameraTransform;
     private Vector3 moveVelocity;
     private Vector3 desiredPosition;
-    /*[HideInInspector*/
-    public Transform target;
-    private Rigidbody targetRigidbody;
+    private Quaternion desiredRotation;
 
     private void Awake()
     {
-        camera = GetComponentInChildren<Camera>();
-        targetRigidbody = target.GetComponent<Rigidbody>();
+        cameraTransform = target.GetComponentInChildren<CameraTransformController>().GetTransform();
     }
 
     private void FixedUpdate()
     {
         Move();
-        Debug.Log(moveVelocity.magnitude);
+        //Debug.Log(moveVelocity.magnitude);
     }
 
     private void Move()
     {
-        GetDesiredPosiiton();
+        GetDesiredPosition();
 
-        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, Mathf.Min(dampTime / targetRigidbody.velocity.magnitude, dampTime));
+        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, 1 / positionDampSpeed);
 
-        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, Mathf.Clamp(target.GetComponent<Rigidbody>().angularVelocity.magnitude, 1, target.GetComponent<Rigidbody>().angularVelocity.magnitude) * angleDampSpeed * Time.deltaTime);
     }
 
-    private void GetDesiredPosiiton()
+    private void GetDesiredPosition()
     {
-        desiredPosition = targetRigidbody.position + targetRigidbody.velocity.normalized * Mathf.Clamp(targetRigidbody.velocity.magnitude, 0f, maxDistanceInFront);
+        //desiredPosition = targetRigidbody.position + targetRigidbody.velocity.normalized * Mathf.Clamp(targetRigidbody.velocity.magnitude, 0f, maxDistanceInFront;
+
+        desiredPosition = cameraTransform.position;
+        desiredRotation = cameraTransform.rotation;
     }
+
+    public float getCameraDistance()
+    {
+        return cameraDistance;
+    }
+
+    public float getCameraAngle()
+    {
+        return cameraAngle;
+    }
+
+    public float getCameraHeight()
+    {
+        return cameraHeight;
+    }
+
 }
 
