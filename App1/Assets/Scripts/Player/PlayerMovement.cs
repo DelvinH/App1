@@ -35,11 +35,11 @@ public class PlayerMovement : MonoBehaviour
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
 
+        turn = 0f;
+
         atSurface = true;
         diving = false;
         surfacing = false;
-
-        turn = 0f;
     }
 
     /*private void OnDisable()
@@ -71,16 +71,14 @@ public class PlayerMovement : MonoBehaviour
     private void Move()//edit for joystick
     {
         Vector3 movement = transform.forward * movementAxisValue * moveAcceleration;
-
         rigidbody.AddForce(movement);
 
-
-        if (rigidbody.velocity.magnitude >= moveSpeed)
+        if (rigidbody.velocity.magnitude >= moveSpeed)//limits speed
             rigidbody.velocity = rigidbody.velocity.normalized * moveSpeed;
 
         rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;//prevents drifting
-
-        if (Mathf.Abs(movementAxisValue) < 0.01f && rigidbody.velocity.magnitude < 0.01f)
+        
+        if (Mathf.Abs(movementAxisValue) < 0.01f && rigidbody.velocity.magnitude < 0.01f)//ensures stopping speed is 0
             rigidbody.velocity = Vector3.zero;
 
         if (atSurface)
@@ -92,41 +90,32 @@ public class PlayerMovement : MonoBehaviour
             //SubmergedAudio
         }
 
+        RestrainMovement();
         //Debug.Log(rigidbody.velocity.magnitude);
     }
 
     private void Turn()
     {
-
-
         /*Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
-
         rigidbody.AddTorque(turn);
 
         if (rigidbody.angularVelocity.magnitude >= maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed))
             rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
 
-
         if (Mathf.Abs(turnAxisValue) < 0.01f)
         rigidbody.angularVelocity = Vector3.zero;
-
         if (Mathf.Abs(turnAxisValue) < 0.01f)
            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;*/
 
-        //turn = turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed) * Time.deltaTime;
         turn = Mathf.SmoothDamp(turn, turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), ref turnVelocity, 1 / turnAcceleration);
-        
         Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-
         rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
 
-        //Debug.Log(turn);
+        //Debug.Log(turn + "turn");
         //Debug.Log(turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed));
-               
+        //Debug.Log(turnRotation.eulerAngles);
+        //Debug.Log(rigidbody.rotation.eulerAngles;  
     }
-
-    
-
     private void ToggleDepth()
     {
         if (Input.GetButton("Fire2") && atSurface && (!diving && !surfacing))
@@ -141,7 +130,6 @@ public class PlayerMovement : MonoBehaviour
             timeSinceStart = Time.time;
             //Debug.Log("Fire2");
         }
-       
 
         if (diving)
         {
@@ -156,7 +144,6 @@ public class PlayerMovement : MonoBehaviour
     private void Dive()
     {
         Vector3 diveMovement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//Negative makes submarine go down
-
         atSurface = false;
 
         //Audio
@@ -175,7 +162,6 @@ public class PlayerMovement : MonoBehaviour
     private void Surface()
     {
         float timeElapsed = Time.time;
-
         Vector3 surfaceMovement = transform.up * changeDepthSpeed * Time.deltaTime;
 
         if (Time.time - timeSinceStart < changeDepthTime)
@@ -186,18 +172,29 @@ public class PlayerMovement : MonoBehaviour
         {
             diving = false;
             surfacing = false;
-
             atSurface = true;
 
             //Audio
         }
     }
 
-
-
     public bool getChangingDepth()
     {
         return diving || surfacing;
     }
+
+    private void RestrainMovement()//makes sure player is on game plane (y=0 for surface, y=-1 for submerged)
+    {
+        if (Mathf.Abs(transform.position.y + 1f) < Mathf.Abs(transform.position.y) && (!diving && !surfacing))//closer to -1
+        {
+            transform.position = new Vector3(transform.position.x, -1, transform.position.z);
+        }
+        else if (Mathf.Abs(transform.position.y + 1f) > Mathf.Abs(transform.position.y) && (!diving && !surfacing))//closer to 0
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+    }
+
+    
 }
 
