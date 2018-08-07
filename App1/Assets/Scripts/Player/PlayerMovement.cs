@@ -9,19 +9,19 @@ public class PlayerMovement : MonoBehaviour
     private string turnAxisName;
     private float movementAxisValue;
     private float turnAxisValue;
+
     private float turnVelocity;
-    private float turn;
+    private float turnValue;
 
     private bool atSurface;
-    private bool diving;
-    private bool surfacing;
-    private float timeSinceStart;
-
+    private bool changingDepth;
+    private bool beginCoroutine;
+    
     public float moveAcceleration;
     public float turnAcceleration;
-    public float turnSpeed;
     public float moveSpeed;
-
+    public float turnSpeed;
+    
     public float changeDepthSpeed;
     public float changeDepthTime;
 
@@ -35,11 +35,10 @@ public class PlayerMovement : MonoBehaviour
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
 
-        turn = 0f;
+        turnValue = 0f;
 
         atSurface = true;
-        diving = false;
-        surfacing = false;
+        changingDepth = false;
     }
 
     /*private void OnDisable()
@@ -96,19 +95,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Turn()
     {
-        /*Vector3 turn = transform.up * turnAxisValue * turnAcceleration * (rigidbody.velocity.magnitude / maxMoveSpeed);
-        rigidbody.AddTorque(turn);
-
-        if (rigidbody.angularVelocity.magnitude >= maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed))
-            rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * maxTurnSpeed * (rigidbody.velocity.magnitude / maxMoveSpeed);
-
-        if (Mathf.Abs(turnAxisValue) < 0.01f)
-        rigidbody.angularVelocity = Vector3.zero;
-        if (Mathf.Abs(turnAxisValue) < 0.01f)
-           rigidbody.angularVelocity = rigidbody.angularVelocity.normalized * rigidbody.angularVelocity.magnitude / angularDrag;*/
-
-        turn = Mathf.SmoothDamp(turn, turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), ref turnVelocity, 1 / turnAcceleration);
-        Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
+        turnValue = Mathf.SmoothDamp(turnValue, turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), ref turnVelocity, 1 / turnAcceleration);
+        Quaternion turnRotation = Quaternion.Euler(0f, turnValue, 0f);
         rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
 
         //Debug.Log(turn + "turn");
@@ -118,83 +106,66 @@ public class PlayerMovement : MonoBehaviour
     }
     private void ToggleDepth()
     {
-        if (Input.GetButton("Fire2") && atSurface && (!diving && !surfacing))
+        if (Input.GetButton("Fire2") && !changingDepth)
         {
-            diving = true;
-            timeSinceStart = Time.time;
+            changingDepth = true;
+            beginCoroutine = true;
             //Debug.Log("Fire2");
         }
-        else if (Input.GetButton("Fire2") && !atSurface && (!diving && !surfacing))
+        
+        if (changingDepth && beginCoroutine)
         {
-            surfacing = true;
-            timeSinceStart = Time.time;
-            //Debug.Log("Fire2");
-        }
-
-        if (diving)
-        {
-            Dive();
-        }
-        else if (surfacing)
-        {
-            Surface();
+            IEnumerator coroutine = ChangeDepth(atSurface);
+            StartCoroutine(coroutine);
         }
     }
 
-    private void Dive()
+    private IEnumerator ChangeDepth(bool atSurface)
     {
-        Vector3 diveMovement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//Negative makes submarine go down
-        atSurface = false;
-
-        //Audio
-
-        if (Time.time - timeSinceStart < changeDepthTime)
-        {
-            rigidbody.MovePosition(rigidbody.position + diveMovement);
-        }
-        else if (Time.time - timeSinceStart > changeDepthTime)
-        {
-            diving = false;
-            surfacing = false;
-        }
-    }
-
-    private void Surface()
-    {
+        Vector3 movement;
         float timeElapsed = Time.time;
-        Vector3 surfaceMovement = transform.up * changeDepthSpeed * Time.deltaTime;
+        beginCoroutine = false;//prevents more coroutines from starting
 
-        if (Time.time - timeSinceStart < changeDepthTime)
+        if (atSurface)
         {
-            rigidbody.MovePosition(rigidbody.position + surfaceMovement);
-        }
-        else if (Time.time - timeSinceStart > changeDepthTime)
-        {
-            diving = false;
-            surfacing = false;
-            atSurface = true;
-
+            this.atSurface = false;//submarine leaves surface plane at beginning of dive
             //Audio
         }
-    }
+       
+        while (Time.time - timeElapsed < changeDepthTime)
+        {
+            if (atSurface)//if loop must be in while loop for proper Time.deltaTime values
+                movement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//negative makes submarine go down
+            else
+                movement = transform.up * changeDepthSpeed * Time.deltaTime;//positive makes submarine go up
+            rigidbody.MovePosition(rigidbody.position + movement);
+            yield return null;
+        }
 
-    public bool getChangingDepth()
-    {
-        return diving || surfacing;
+        if (!atSurface)
+        {
+            this.atSurface = true;//submarine enters surface plane at end of surface
+            //Audio
+        }
+
+        changingDepth = false;
     }
 
     private void RestrainMovement()//makes sure player is on game plane (y=0 for surface, y=-1 for submerged)
     {
-        if (Mathf.Abs(transform.position.y + 1f) < Mathf.Abs(transform.position.y) && (!diving && !surfacing))//closer to -1
+        if (Mathf.Abs(transform.position.y + 1f) < Mathf.Abs(transform.position.y) && !changingDepth)//closer to -1
         {
             transform.position = new Vector3(transform.position.x, -1, transform.position.z);
         }
-        else if (Mathf.Abs(transform.position.y + 1f) > Mathf.Abs(transform.position.y) && (!diving && !surfacing))//closer to 0
+        else if (Mathf.Abs(transform.position.y + 1f) > Mathf.Abs(transform.position.y) && !changingDepth)//closer to 0
         {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
     }
 
-    
+    public bool getChangingDepth()
+    {
+        return changingDepth;
+    }
 }
 

@@ -264,6 +264,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114990861696744782, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
+        type: 2}
+      propertyPath: maxDamage
+      value: 55
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
   m_IsPrefabAsset: 0
@@ -692,8 +697,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveAcceleration: 2
   turnAcceleration: 4
-  turnSpeed: 1.5
   moveSpeed: 6
+  turnSpeed: 1.5
   changeDepthSpeed: 0.5
   changeDepthTime: 2
 --- !u!4 &1632113581
