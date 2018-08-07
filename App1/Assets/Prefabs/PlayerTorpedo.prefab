@@ -22753,10 +22753,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   ignoreMaskNumber: 8
-  maxDamage: 50
+  maxDamage: 55
   minDamage: 40
-  maxLifetime: 5
+  maxLifetime: 10
   explosionRadius: 1
+  homing: 0
 --- !u!136 &136154839168942742
 CapsuleCollider:
   m_ObjectHideFlags: 1

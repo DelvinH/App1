@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     public float turnAcceleration;
     public float moveSpeed;
     public float turnSpeed;
+    public float minTurnSpeed;
     
     public float changeDepthSpeed;
     public float changeDepthTime;
@@ -67,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         ToggleDepth();
     }
 
-    private void Move()//edit for joystick
+    private void Move()
     {
         Vector3 movement = transform.forward * movementAxisValue * moveAcceleration;
         rigidbody.AddForce(movement);
@@ -95,7 +96,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Turn()
     {
-        turnValue = Mathf.SmoothDamp(turnValue, turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), ref turnVelocity, 1 / turnAcceleration);
+        turnValue = 
+            Mathf.SmoothDamp(turnValue, 
+            turnAxisValue * Mathf.Clamp(turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), minTurnSpeed, turnSpeed * (rigidbody.velocity.magnitude / moveSpeed)),
+            ref turnVelocity, 1 / turnAcceleration);
         Quaternion turnRotation = Quaternion.Euler(0f, turnValue, 0f);
         rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
 

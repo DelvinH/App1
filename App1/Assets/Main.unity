@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -263,11 +263,6 @@ Prefab:
     - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
       propertyPath: m_RootOrder
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114990861696744782, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
-        type: 2}
-      propertyPath: maxDamage
-      value: 55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
@@ -699,6 +694,7 @@ MonoBehaviour:
   turnAcceleration: 4
   moveSpeed: 6
   turnSpeed: 1.5
+  minTurnSpeed: 0.2
   changeDepthSpeed: 0.5
   changeDepthTime: 2
 --- !u!4 &1632113581
