@@ -561,7 +561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionDampSpeed: 20
   angleDampSpeed: 100
-  target: {fileID: 0}
+  target: {fileID: 1632113579}
   cameraDistance: 4
   cameraAngle: 25
   cameraHeight: 0.5
@@ -1193,7 +1193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112c094c7fd4cbd478421286589552e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
+  camera: {fileID: 1632113579}
   cameraTilt: 0
 --- !u!1 &2123174091
 GameObject:

@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MobFactions {Neutral, Player, Hostile};
+
 public class Mob : DestructibleObject {
 
 	//defaults are included.
+
+	//targeting things
+	public IList<MobFactions> factions = new List<MobFactions>();
 
 	//"powered" movement
 	//WIP: force falloff
@@ -30,6 +35,7 @@ public class Mob : DestructibleObject {
 	override public void Start ()
 	{
 		base.Start ();
+		InitializeFactions ();
 	}
 
 	// Update is called once per frame
@@ -42,6 +48,11 @@ public class Mob : DestructibleObject {
 	override public void FixedUpdate(){
 		handleMovement ();
 		base.FixedUpdate ();
+	}
+
+	public virtual void InitializeFactions(){
+		factions.Clear ();
+		factions.Add (MobFactions.Neutral);
 	}
 
 	public void setForwardPower(float forward){
