@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestructibleObject : MonoBehaviour
+public class DestructibleObject : Rigidbody
 {
 	public float health;
 	public float maxHealth;

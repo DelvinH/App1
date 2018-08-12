@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mobs : MonoBehaviour {
+public class Mob : DestructibleObject {
 
 	// Use this for initialization
 	void Start () {
