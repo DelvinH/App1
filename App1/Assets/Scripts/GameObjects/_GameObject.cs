@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class OurGameObject : Rigidbody{
 
-	public bool atSurface = false;
+	public bool atSurface = true;
+	private bool changingDepth = false;
 
 	// Use this for initialization
 	virtual public void Start ()
@@ -20,6 +21,52 @@ public class OurGameObject : Rigidbody{
 
 	virtual public void FixedUpdate(){
 		RestrainMovement ();
+	}
+
+	private bool ToggleDepth()
+	{	
+		if (changingDepth) {
+			return false;
+		}
+		bool target = !atSurface;
+		IEnumerator coroutine = ChangeDepth (target);
+		return true;
+	}
+
+	private IEnumerator ChangeDepth(bool atSurface)
+	{
+		Vector3 movement;
+		float timeElapsed = Time.time;
+		changingDepth = true;
+
+		if (atSurface)
+		{
+			this.atSurface = false;//submarine leaves surface plane at beginning of dive
+			//Audio
+		}
+
+		while (Time.time - timeElapsed < changeDepthTime)
+		{
+			if (atSurface)//if loop must be in while loop for proper Time.deltaTime values
+				movement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//negative makes submarine go down
+			else
+				movement = transform.up * changeDepthSpeed * Time.deltaTime;//positive makes submarine go up
+			rigidbody.MovePosition(rigidbody.position + movement);
+			yield return null;
+		}
+
+		if (!atSurface)
+		{
+			this.atSurface = true;//submarine enters surface plane at end of surface
+			//Audio
+		}
+
+		changingDepth = false;
+	}
+
+	public bool getChangingDepth()
+	{
+		return changingDepth;
 	}
 
 	private void RestrainMovement()//makes sure player is on game plane (y=0 for surface, y=-1 for submerged)

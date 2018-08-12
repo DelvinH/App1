@@ -56,6 +56,18 @@ public class Mob : DestructibleObject {
 		movementRotationPower = Mathf.Clamp (rotate, -movementRotationMaxPower, movementRotationMaxPower);
 	}
 
+	void setPercentForwardPower(float percent){
+		setForwardPower (movementForwardMaxPower * percent);
+	}
+
+	void setPercentStrafePower(float percent){
+		setStrafePower (movementStrafingMaxPower * percent);
+	}
+
+	void setPercentRotatePower(float percent){
+		setRotatePower (movementRotationMaxPower * percent);
+	}
+
 	void handleMovement(){
 		Vector3 forwardVector = transform.forward * movementForwardPower;
 		Vector3 strafeVector = transform.right * movementStrafingPower;
@@ -74,12 +86,12 @@ public class Mob : DestructibleObject {
 			}
 
 		else {
-			rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;		//prevents drifting if we can't strafe
+			velocity = transform.forward * velocity.magnitude;		//prevents drifting if we can't strafe
 		}
 
 		float rotate = movementRotationPower;
 		if(movementRotationRequiresForward) {
-			rotate = Mathf.Clamp (movementRotationPower, -movementRotationMaxPower * Mathf.abs (velocity.z / movementForwardMaxVelocity), movementRotationMaxPower * Mathf.abs (velocity.z / movementForwardMaxVelocity));
+			rotate = Mathf.Clamp (movementRotationPower, -movementRotationMaxPower * Mathf.Abs (velocity.z / movementForwardMaxVelocity), movementRotationMaxPower * Mathf.Abs (velocity.z / movementForwardMaxVelocity));
 		}
 		if (movementRotationDamped) {
 			movementRotationCurrent = Mathf.SmoothDamp (movementRotationCurrent, rotate, ref movementRotationCurrent, movementRotationDampTime, movementRotationMaxPower);
