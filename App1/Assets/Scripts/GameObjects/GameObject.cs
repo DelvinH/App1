@@ -6,6 +6,8 @@ public class OurGameObject : Rigidbody{
 
 	public bool atSurface = true;
 	private bool changingDepth = false;
+	public float changeDepthSpeed = 0.5;
+	public float changeDepthTime = 2;
 
 	// Use this for initialization
 	virtual public void Start ()
@@ -51,7 +53,7 @@ public class OurGameObject : Rigidbody{
 				movement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//negative makes submarine go down
 			else
 				movement = transform.up * changeDepthSpeed * Time.deltaTime;//positive makes submarine go up
-			rigidbody.MovePosition(rigidbody.position + movement);
+			MovePosition(position + movement);
 			yield return null;
 		}
 

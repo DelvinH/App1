@@ -8,7 +8,7 @@ public class MobAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		OurMob = GetComponent<Mob> ();
+		OurMob = gameObject.GetComponent<Mob> ();
 		if (!OurMob) {
 			Debug.LogWarning ("MobAI added to something that does not have a mob component", this);
 			Destroy (this);

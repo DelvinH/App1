@@ -13,22 +13,15 @@ public class PlayerMovement : MonoBehaviour
     private float turnVelocity;
     private float turnValue;
 
-    private bool atSurface;
-    private bool changingDepth;
-    private bool beginCoroutine;
-    
     public float moveAcceleration;
     public float turnAcceleration;
     public float moveSpeed;
     public float turnSpeed;
     public float minTurnSpeed;
-    
-    public float changeDepthSpeed;
-    public float changeDepthTime;
 
     private void Awake()
     {
-		playerMob = GetComponent<Mob>();
+		playerMob = gameObject.GetComponent<Mob>();
     }
 
     private void Start()
@@ -69,11 +62,11 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
 
-		if (atSurface)
+		if (playerMob.atSurface)
         {
             //SurfaceAudio
         }
-        else if (!atSurface)
+		else if (!playerMob.atSurface)
         {
             //SubmergedAudio
         }
@@ -83,12 +76,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Turn()
     {
-        turnValue = 
+        /*turnValue = 
             Mathf.SmoothDamp(turnValue, 
-            turnAxisValue * Mathf.Clamp(turnSpeed * (rigidbody.velocity.magnitude / moveSpeed), minTurnSpeed, turnSpeed * (rigidbody.velocity.magnitude / moveSpeed)),
+			turnAxisValue * Mathf.Clamp(turnSpeed * (playerMob.velocity.magnitude / moveSpeed), minTurnSpeed, turnSpeed * (playerMob.velocity.magnitude / moveSpeed)),
             ref turnVelocity, 1 / turnAcceleration);
         Quaternion turnRotation = Quaternion.Euler(0f, turnValue, 0f);
-        rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
+        rigidbody.MoveRotation(playerMob.rotation * turnRotation);*/
 
         //Debug.Log(turn + "turn");
         //Debug.Log(turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed));
@@ -99,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
     {
 		if (Input.GetButton("Fire2"))
         {
-			gameObject.ChangeDepth ();
+			playerMob.ToggleDepth ();
         }
         
     }

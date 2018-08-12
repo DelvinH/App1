@@ -44,27 +44,27 @@ public class Mob : DestructibleObject {
 		base.FixedUpdate ();
 	}
 
-	void setForwardPower(float forward){
+	public void setForwardPower(float forward){
 		movementForwardPower = Mathf.Clamp (forward, -movementForwardMaxPower, movementForwardMaxPower);
 	}
 
-	void setStrafePower(float strafe){
+	public void setStrafePower(float strafe){
 		movementStrafingPower = Mathf.Clamp (strafe, -movementStrafingMaxPower, movementStrafingMaxPower);
 	}
 
-	void setRotatePower(float rotate){
+	public void setRotatePower(float rotate){
 		movementRotationPower = Mathf.Clamp (rotate, -movementRotationMaxPower, movementRotationMaxPower);
 	}
 
-	void setPercentForwardPower(float percent){
+	public void setPercentForwardPower(float percent){
 		setForwardPower (movementForwardMaxPower * percent);
 	}
 
-	void setPercentStrafePower(float percent){
+	public void setPercentStrafePower(float percent){
 		setStrafePower (movementStrafingMaxPower * percent);
 	}
 
-	void setPercentRotatePower(float percent){
+	public void setPercentRotatePower(float percent){
 		setRotatePower (movementRotationMaxPower * percent);
 	}
 
@@ -98,7 +98,7 @@ public class Mob : DestructibleObject {
 			rotate = movementRotationCurrent;
 		}
 		Quaternion turnRotation = Quaternion.Euler(0f, rotate, 0f);
-		MoveRotation(rigidbody.rotation * turnRotation);
+		MoveRotation(rotation * turnRotation);
 		//Full stop when not enough force to keep moving
 		if (movementForwardPower < 0.01f && velocity.magnitude < 0.01f) {
 			velocity = Vector3.zero;

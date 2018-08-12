@@ -33,7 +33,7 @@ public class PlayerFiring : MonoBehaviour
     {
         leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
         rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
-        if (Input.GetButtonDown("Fire1") && leftIsReady && rightIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth())//randomizes the side that fires if both are ready
+        if (Input.GetButtonDown("Fire1") && leftIsReady && rightIsReady && !gameObject.GetComponent<Mob>().getChangingDepth())//randomizes the side that fires if both are ready
         {
             float rand = Random.value - 0.5f;
             if (rand <= 0)
