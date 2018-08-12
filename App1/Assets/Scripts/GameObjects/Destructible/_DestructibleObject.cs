@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestructibleObject : Rigidbody
+public class DestructibleObject : OurGameObject
 {
 	public float health;
 	public float maxHealth;
 
 	// Use this for initialization
-	void Start ()
+	override public void Start ()
     {
-		
+		base.Start ();
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	override public void Update ()
     {
-		
+		base.Update ();
 	}
 
 	public float GetHealth()
