@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OurGameObject : Rigidbody{
+public class OurGameObject : MonoBehaviour{
 
+	protected Rigidbody rigidbody;
 	public bool atSurface = true;
 	private bool changingDepth = false;
-	public float changeDepthSpeed = 0.5;
-	public float changeDepthTime = 2;
+	public float changeDepthSpeed = 0.5f;
+	public float changeDepthTime = 2f;
 
 	// Use this for initialization
 	virtual public void Start ()
 	{
-
+		rigidbody = gameObject.GetComponent<Rigidbody> ();
+		if (!rigidbody) {
+			Debug.LogWarning ("Game Object without rigidbody", this);
+		}
 	}
 
 	// Update is called once per frame
@@ -25,7 +29,7 @@ public class OurGameObject : Rigidbody{
 		RestrainMovement ();
 	}
 
-	private bool ToggleDepth()
+	public bool ToggleDepth()
 	{	
 		if (changingDepth) {
 			return false;
@@ -53,7 +57,7 @@ public class OurGameObject : Rigidbody{
 				movement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//negative makes submarine go down
 			else
 				movement = transform.up * changeDepthSpeed * Time.deltaTime;//positive makes submarine go up
-			MovePosition(position + movement);
+			rigidbody.MovePosition(rigidbody.position + movement);
 			yield return null;
 		}
 

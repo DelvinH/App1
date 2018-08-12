@@ -50,13 +50,13 @@ public class PlayerFiring : MonoBehaviour
             }
             //Debug.Log(rand + "rand");
         }
-        else if ((Input.GetButtonDown("Fire1") && leftIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth()))
+        else if ((Input.GetButtonDown("Fire1") && leftIsReady && !gameObject.GetComponent<Mob>().getChangingDepth()))
         {
             FireLeft();
             timeSinceLastFireLeft = Time.time;
             //Debug.Log("firedleft");
         }
-        else if ((Input.GetButtonDown("Fire1") && rightIsReady && !gameObject.GetComponent<PlayerMovement>().getChangingDepth()))
+        else if ((Input.GetButtonDown("Fire1") && rightIsReady && !gameObject.GetComponent<Mob>().getChangingDepth()))
         {
             FireRight();
             timeSinceLastFireRight = Time.time;

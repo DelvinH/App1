@@ -72,36 +72,36 @@ public class Mob : DestructibleObject {
 		Vector3 forwardVector = transform.forward * movementForwardPower;
 		Vector3 strafeVector = transform.right * movementStrafingPower;
 		if(canMoveForward)
-			AddForce (forwardVector);
+			rigidbody.AddForce (forwardVector);
 
-			if (velocity.z >= movementForwardMaxVelocity) {
-				velocity = velocity.normalized * movementForwardMaxVelocity;
+			if (rigidbody.velocity.z >= movementForwardMaxVelocity) {
+				rigidbody.velocity = rigidbody.velocity.normalized * movementForwardMaxVelocity;
 			}
 
 		if(canMoveStrafe)
-			AddForce (strafeVector);
+			rigidbody.AddForce (strafeVector);
 			
-			if (velocity.x >= movementStrafingMaxVelocity) {
-				velocity = velocity.normalized * movementStrafingMaxVelocity;
+			if (rigidbody.velocity.x >= movementStrafingMaxVelocity) {
+				rigidbody.velocity = rigidbody.velocity.normalized * movementStrafingMaxVelocity;
 			}
 
 		else {
-			velocity = transform.forward * velocity.magnitude;		//prevents drifting if we can't strafe
+			rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;		//prevents drifting if we can't strafe
 		}
 
 		float rotate = movementRotationPower;
 		if(movementRotationRequiresForward) {
-			rotate = Mathf.Clamp (movementRotationPower, -movementRotationMaxPower * Mathf.Abs (velocity.z / movementForwardMaxVelocity), movementRotationMaxPower * Mathf.Abs (velocity.z / movementForwardMaxVelocity));
+			rotate = Mathf.Clamp (movementRotationPower, -movementRotationMaxPower * Mathf.Abs (rigidbody.velocity.z / movementForwardMaxVelocity), movementRotationMaxPower * Mathf.Abs (rigidbody.velocity.z / movementForwardMaxVelocity));
 		}
 		if (movementRotationDamped) {
 			movementRotationCurrent = Mathf.SmoothDamp (movementRotationCurrent, rotate, ref movementRotationCurrent, movementRotationDampTime, movementRotationMaxPower);
 			rotate = movementRotationCurrent;
 		}
 		Quaternion turnRotation = Quaternion.Euler(0f, rotate, 0f);
-		MoveRotation(rotation * turnRotation);
+		rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
 		//Full stop when not enough force to keep moving
-		if (movementForwardPower < 0.01f && velocity.magnitude < 0.01f) {
-			velocity = Vector3.zero;
+		if (movementForwardPower < 0.01f && rigidbody.velocity.magnitude < 0.01f) {
+			rigidbody.velocity = Vector3.zero;
 		}
 
 	}

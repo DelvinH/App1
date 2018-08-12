@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -380,6 +380,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atSurface: 1
+  changeDepthSpeed: 0.5
+  changeDepthTime: 2
   health: 100
   maxHealth: 100
 --- !u!1 &915075828
@@ -495,6 +498,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atSurface: 1
+  changeDepthSpeed: 0.5
+  changeDepthTime: 2
   health: 100
   maxHealth: 100
 --- !u!1 &928552591
@@ -555,7 +561,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   positionDampSpeed: 20
   angleDampSpeed: 100
-  target: {fileID: 1632113579}
+  target: {fileID: 0}
   cameraDistance: 4
   cameraAngle: 25
   cameraHeight: 0.5
@@ -672,6 +678,7 @@ GameObject:
   - component: {fileID: 1632113584}
   - component: {fileID: 1632113583}
   - component: {fileID: 1632113580}
+  - component: {fileID: 1632113585}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -695,8 +702,6 @@ MonoBehaviour:
   moveSpeed: 6
   turnSpeed: 1.5
   minTurnSpeed: 0.2
-  changeDepthSpeed: 0.5
-  changeDepthTime: 2
 --- !u!4 &1632113581
 Transform:
   m_ObjectHideFlags: 0
@@ -760,6 +765,36 @@ CapsuleCollider:
   m_Height: 2.4
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.6}
+--- !u!114 &1632113585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632113579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82936a6264943b049850ef9cba95b9d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  atSurface: 1
+  changeDepthSpeed: 0.5
+  changeDepthTime: 2
+  health: 200
+  maxHealth: 200
+  canMoveForward: 1
+  movementForwardPower: 0
+  movementForwardMaxPower: 1
+  movementForwardMaxVelocity: 10
+  canMoveStrafe: 0
+  movementStrafingPower: 0
+  movementStrafingMaxPower: 1
+  movementStrafingMaxVelocity: 5
+  canMoveRotate: 1
+  movementRotationRequiresForward: 0
+  movementRotationDamped: 0
+  movementRotationDampTime: 1
+  movementRotationPower: 0
+  movementRotationMaxPower: 1
 --- !u!1 &1713597102
 GameObject:
   m_ObjectHideFlags: 0
@@ -873,6 +908,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atSurface: 1
+  changeDepthSpeed: 0.5
+  changeDepthTime: 2
   health: 100
   maxHealth: 100
 --- !u!1 &1956655237
@@ -1082,6 +1120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  atSurface: 1
+  changeDepthSpeed: 0.5
+  changeDepthTime: 2
   health: 100
   maxHealth: 100
 --- !u!1 &2071053081
@@ -1152,7 +1193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112c094c7fd4cbd478421286589552e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1121480465}
+  camera: {fileID: 0}
   cameraTilt: 0
 --- !u!1 &2123174091
 GameObject:
