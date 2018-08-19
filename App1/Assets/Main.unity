@@ -113,6 +113,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!54 &34308460 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 54595875893004476, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
+    type: 2}
+  m_PrefabInternal: {fileID: 278977138}
 --- !u!1001 &96503352
 Prefab:
   m_ObjectHideFlags: 0
@@ -697,11 +702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3dd83459a7b2ba43b0e1424d1c9e137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveAcceleration: 2
-  turnAcceleration: 4
-  moveSpeed: 6
-  turnSpeed: 1.5
-  minTurnSpeed: 0.2
 --- !u!4 &1632113581
 Transform:
   m_ObjectHideFlags: 0
@@ -795,6 +795,12 @@ MonoBehaviour:
   movementRotationDampTime: 1
   movementRotationPower: 0
   movementRotationMaxPower: 1
+  projectileType: {fileID: 34308460}
+  fireTransformLeft: {fileID: 2071053082}
+  fireTransformRight: {fileID: 1956655238}
+  fireSpeed: 15
+  fireRate: 1
+  minSpeedMultiplier: 0.9
 --- !u!1 &1713597102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1193,7 +1199,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112c094c7fd4cbd478421286589552e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1632113579}
+  camera: {fileID: 2123174091}
   cameraTilt: 0
 --- !u!1 &2123174091
 GameObject:

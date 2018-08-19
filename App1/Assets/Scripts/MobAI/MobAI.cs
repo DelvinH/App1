@@ -4,9 +4,19 @@ using UnityEngine;
 
 public class MobAI : MonoBehaviour {
 
+	const int AI_OFF = 0;
+	const int AI_FOLLOW = 1;
+	//const int AI_PATROL = 2;
+
 	private Mob OurMob;
 
 	public LayerMask targetLayerMask;
+
+	public bool onlyTargetSameDepth = true;			//only go after things in the same depth
+
+	public int AIState = AI_OFF;
+
+	public GameObject target;
 
 	//public float basicDetectionRange = 30.0f;		//will detect things within this range
 	//public float basicLockRange = 80.0f;			//will keep locks to already detected things within this range
@@ -25,7 +35,27 @@ public class MobAI : MonoBehaviour {
 	// Update is called once per frame
 	virtual public void Update ()
 	{
-		//CheckTarget ();
+		CheckTarget ();
+		HandleAI ();
+	}
+
+	virtual public void CheckTarget(){
+		target = Globals.ThePlayer;
+		AIState = AI_FOLLOW;
+	}
+
+	virtual public void HandleAI(){
+		switch (AIState) {
+		case AI_OFF:
+			return;
+		case AI_FOLLOW:
+			//follow 
+			return;
+		}
+	}
+
+	virtual public void GoTo(){
+
 	}
 
 	/*
