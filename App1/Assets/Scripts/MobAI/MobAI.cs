@@ -6,9 +6,12 @@ public class MobAI : MonoBehaviour {
 
 	private Mob OurMob;
 
-	public float basicDetectionRange = 30.0f;		//will detect things within this range
-	public float basicLockRange = 80.0f;			//will keep locks to already detected things within this range
-	public IList<GameObject> targets = new List<GameObject>();
+	public LayerMask targetLayerMask;
+
+	//public float basicDetectionRange = 30.0f;		//will detect things within this range
+	//public float basicLockRange = 80.0f;			//will keep locks to already detected things within this range
+	//public bool onlyLockSameDepth = true;			//will lock only things on surface if at surface or below if below etc
+	//public IList<GameObject> targets = new List<GameObject>();
 
 	// Use this for initialization
 	virtual public void Start () {
@@ -22,9 +25,10 @@ public class MobAI : MonoBehaviour {
 	// Update is called once per frame
 	virtual public void Update ()
 	{
-
+		//CheckTarget ();
 	}
-		
+
+	/*
 	public void updateTargets(){
 
 	}
@@ -47,8 +51,8 @@ public class MobAI : MonoBehaviour {
 		if (!PotentialEnemy) {
 			return false;
 		}
-		//If we have a faction in common, ignore.
-		if (factionCheckFriendly (PotentialEnemy)) {
+		//If we don't want their layer, ignore.
+		if (targetLayerMask != (targetLayerMask | (1 << theObject.layer))) {
 			return false;
 		}
 		//distance
@@ -75,6 +79,6 @@ public class MobAI : MonoBehaviour {
 	virtual public bool canSee(GameObject theObject){
 		//distance
 		return true;
-	}
+	}*/
 
 }

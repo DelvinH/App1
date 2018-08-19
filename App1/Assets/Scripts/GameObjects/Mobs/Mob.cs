@@ -8,9 +8,6 @@ public class Mob : DestructibleObject {
 
 	//defaults are included.
 
-	//targeting things
-	public IList<MobFactions> factions = new List<MobFactions>();
-
 	//"powered" movement
 	//WIP: force falloff
 	public bool canMoveForward = true;						//foward/backward
@@ -31,11 +28,24 @@ public class Mob : DestructibleObject {
 	public float movementRotationPower = 0.0f;					
 	public float movementRotationMaxPower = 1.0f;				
 
+	//Mob firing
+	public Rigidbody projectileType;
+	public Transform fireTransformLeft;
+	public Transform fireTransformRight;
+	public float fireSpeed;
+	public float fireRate;
+	public float minSpeedMultiplier;//varies torpedo speed
+
+	private float timeSinceLastFireLeft;
+	private float timeSinceLastFireRight;
+	private bool leftIsReady;
+	private bool rightIsReady;
+
 	// Use this for initialization
 	override public void Start ()
 	{
 		base.Start ();
-		InitializeFactions ();
+		//InitializeFactions ();
 	}
 
 	// Update is called once per frame
@@ -50,10 +60,10 @@ public class Mob : DestructibleObject {
 		base.FixedUpdate ();
 	}
 
-	public virtual void InitializeFactions(){
+	/*public virtual void InitializeFactions(){
 		factions.Clear ();
 		factions.Add (MobFactions.Neutral);
-	}
+	}*/
 
 	public void setForwardPower(float forward){
 		movementForwardPower = Mathf.Clamp (forward, -movementForwardMaxPower, movementForwardMaxPower);

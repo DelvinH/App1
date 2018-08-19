@@ -10,14 +10,14 @@ public class PlayerMovement : MonoBehaviour
     private float movementAxisValue;
     private float turnAxisValue;
 
-    private float turnVelocity;
-    private float turnValue;
+    //private float turnVelocity;
+    //private float turnValue;
 
-    public float moveAcceleration;
-    public float turnAcceleration;
-    public float moveSpeed;
-    public float turnSpeed;
-    public float minTurnSpeed;
+    //public float moveAcceleration;
+    //public float turnAcceleration;
+    //public float moveSpeed;
+    //public float turnSpeed;
+    //public float minTurnSpeed;
 
     private void Awake()
     {
@@ -29,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
 
-        turnValue = 0f;
+        //turnValue = 0f;
     }
 
     /*private void OnDisable()
