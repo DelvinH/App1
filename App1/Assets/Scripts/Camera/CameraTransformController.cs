@@ -31,7 +31,6 @@ public class CameraTransformController : MonoBehaviour
 	private void Update ()
     {
         cameraDistance = camera.GetComponent<CameraControl>().getCameraDistance() + camera.GetComponent<CameraControl>().getCameraZoomDistance();
-        Debug.Log(cameraDistance);
         transform.position = playerRigidbody.position + new Vector3(0, cameraHeight, -cameraDistance);//keeps camera on same y plane
     }
 

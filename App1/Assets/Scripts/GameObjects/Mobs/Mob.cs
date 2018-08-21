@@ -6,39 +6,44 @@ public enum MobFactions {Neutral, Player, Hostile};
 
 public class Mob : DestructibleObject {
 
-	//defaults are included.
+    //Default values are included
 
-	//"powered" movement
-	//WIP: force falloff
-	public bool canMoveForward = true;						//foward/backward
-	public float movementForwardPower = 0.0f;					//current force
-	public float movementForwardMaxPower = 1.0f;				//maximum force
-	public float movementForwardMaxVelocity = 10.0f;                //maximum velocity
-    public float timeToMaxSpeedForward;
+    //Forward/Backward movement
+    public bool canMoveForward = true;                  //can move forward/backward
+    public bool movementForwardDamped = true;           //accelerates instantly if false
+	public float movementForwardMaxPower = 1.0f;        //maximum power input value
+	public float movementForwardMaxVelocity = 10.0f;    //maximum velocity
+    public float timeToMaxVelocityForward = 1.0f;       //time to accelerate to max velocity
 
-    private float movementForwardValue = 0f;
-    private float movementForwardReference;
+    private float movementForwardPower = 0.0f;	        //current power input value
+    private float movementForwardValue = 0.0f;          //current forward velocity
+    private float movementForwardReference;             //referenced used for Mathf.SmoothDamp
+
+    //Right/Left movement
+	public bool canMoveStrafe = false;					//can move left/right
+    public bool movementStrafeDamped = true;            //accelerates instantly if false
+    public float movementStrafeMaxPower = 1.0f;         //maximum power input value
+	public float movementStrafeMaxVelocity = 2.0f;      //maximum velocity
+    public float timeToMaxVelocityStrafe = 2.0f;        //time to accelerate to max velocity
+
+    private float movementStrafePower = 0.0f;           //current power input value
+    private float movementStrafeValue = 0.0f;           //current sideways velocity
+    private float movementStrafeReference;              //reference used for Mathf.SmoothDamp
+
+    //Right/Left turning
+    public bool canMoveRotatation = true;					    //can turn left/right
+    public bool movementRotationDamped = true;                  //accelerates instantly if false
+	public bool movementRotationScalesWithVelocity = true;	    //max turning speed scales with percentage of max translational velocity
+    public float movementRotationMinTurnVelocity = 15.0f;       //can turn at up to this velocity even if movementRotationScalesWithVelocity wouldn't allow it
+	public float movementRotationMaxPower = 1.0f;               //maximum power input value
+    public float movementRotationMaxVelocity = 90.0f;           //maximum velocity (degrees)
+    public float timeToMaxVelocityRotation = 2.0f;              //time to accelerate to max velocity
+
+    private float movementRotationPower = 0.0f;                 //current power input value
+    private float movementRotationValue = 0.0f;                 //current angular velocity (degrees)
+    private float movementRotationReference;                    //reference used for Mathf.SmoothDamp
 
 
-	public bool canMoveStrafe = false;						//left/right strafing
-	public float movementStrafePower = 0.0f;
-	public float movementStrafeMaxPower = 1.0f;				
-	public float movementStrafeMaxVelocity = 5.0f;
-    public float timeToMaxSpeedStrafe;
-
-    private float movementStrafeValue = 0f;
-    private float movementStrafeReference;
-
-
-
-
-    public bool canMoveRotate = true;						//left/right turning
-	public bool movementRotationRequiresForward = false;	//clamps max rotation power to forward speed
-	public bool movementRotationDamped = false;				//damped rotation
-	private float movementRotationCurrent = 0.0f;			//current rotation speed/value
-	public float movementRotationDampTime = 1.0f;			//damping time for Mathf.SmoothDamp()
-	public float movementRotationPower = 0.0f;					
-	public float movementRotationMaxPower = 1.0f;				
 
 	//Mob firing
 	public Rigidbody projectileType;
@@ -80,52 +85,49 @@ public class Mob : DestructibleObject {
 		factions.Add (MobFactions.Neutral);
 	}*/
 
-	public void setForwardPower(float forward){
+
+
+    /*Movement*/
+	public void setForwardPower(float forward)
+    {
 		movementForwardPower = Mathf.Clamp (forward, -movementForwardMaxPower, movementForwardMaxPower);
 	}
 
-	public void setStrafePower(float strafe){
+	public void setStrafePower(float strafe)
+    {
 		movementStrafePower = Mathf.Clamp (strafe, -movementStrafeMaxPower, movementStrafeMaxPower);
 	}
 
-	public void setRotatePower(float rotate){
+	public void setRotationPower(float rotate)
+    {
 		movementRotationPower = Mathf.Clamp (rotate, -movementRotationMaxPower, movementRotationMaxPower);
 	}
 
-	public void setPercentForwardPower(float percent){
+	public void setPercentForwardPower(float percent)
+    {
 		setForwardPower (movementForwardMaxPower * percent);
 	}
 
-	public void setPercentStrafePower(float percent){
+	public void setPercentStrafePower(float percent)
+    {
 		setStrafePower (movementStrafeMaxPower * percent);
 	}
 
-	public void setPercentRotatePower(float percent){
-		setRotatePower (movementRotationMaxPower * percent);
+	public void setPercentRotationPower(float percent)
+    {
+		setRotationPower (movementRotationMaxPower * percent);
 	}
 
 	void handleMovement(){
+        handleForwardMovement();
+        handleStrafeMovement();
+        handleRotationMovement();
 
-        movementForwardValue = Mathf.SmoothDamp(movementForwardValue, movementForwardPower * movementForwardMaxVelocity, ref movementForwardReference, timeToMaxSpeedForward);
-        
-        if (canMoveForward)
-        {
-            rigidbody.MovePosition(rigidbody.position + transform.forward * movementForwardValue * Time.deltaTime);
-        }
+        handleStops();
 
-
-
-        movementStrafeValue = Mathf.SmoothDamp(movementStrafeValue, movementStrafePower * movementStrafeMaxVelocity, ref movementStrafeReference, timeToMaxSpeedStrafe);
-
-        if (canMoveStrafe)
-        {
-            rigidbody.MovePosition(rigidbody.position + transform.right * movementStrafeValue * Time.deltaTime);
-        }
-
-
-
-
-
+        Debug.Log("movementForwardValue: " + movementForwardValue);
+        Debug.Log("movementStrafeValue: " + movementStrafeValue);
+        Debug.Log("movementRotationValue: " + movementRotationValue);
 
         /*v1
          * Vector3 forwardVector = transform.forward * movementForwardPower;
@@ -165,7 +167,81 @@ public class Mob : DestructibleObject {
         */
     }
 
-	private void handleFiring(){
+    private void handleForwardMovement()
+    {
+        movementForwardValue = movementForwardPower * movementForwardMaxVelocity;
+        if (movementForwardDamped)
+        {
+            movementForwardValue = Mathf.SmoothDamp(movementForwardValue, movementForwardPower * movementForwardMaxVelocity, ref movementForwardReference, timeToMaxVelocityForward);
+        }
+        if (canMoveForward)
+        {
+            Vector3 movementForwardVector = rigidbody.position + transform.forward * movementForwardValue * Time.deltaTime;
+            rigidbody.MovePosition(movementForwardVector);
+        }
+    }
+
+    private void handleStrafeMovement()
+    {
+        movementStrafeValue = movementStrafePower * movementStrafeMaxVelocity;
+        if (movementStrafeDamped)
+        {
+            movementStrafeValue = Mathf.SmoothDamp(movementStrafeValue, movementStrafePower * movementStrafeMaxVelocity, ref movementStrafeReference, timeToMaxVelocityStrafe);
+        }
+        if (canMoveStrafe)
+        {
+            Vector3 movementStrafeVector = rigidbody.position + transform.right * movementStrafeValue * Time.deltaTime;
+            rigidbody.MovePosition(movementStrafeVector);
+        }
+    }
+
+    private void handleRotationMovement()
+    {
+        movementRotationValue = movementRotationPower * movementRotationMaxVelocity;
+        if (movementRotationScalesWithVelocity)
+        {
+            float currentVelocity = Mathf.Sqrt(Mathf.Pow(movementForwardValue, 2) + Mathf.Pow(movementStrafeValue, 2));//XZ plane speed only; add Y dimension if needed
+            float maxVelocity = Mathf.Sqrt(Mathf.Pow(movementRotationMaxVelocity, 2) + Mathf.Pow(movementStrafeMaxVelocity, 2));
+
+            float lowerRotationClamp = Mathf.Min(-movementRotationMaxVelocity * Mathf.Abs(currentVelocity / maxVelocity), -movementRotationMinTurnVelocity);//Sets clamp bounds to higher of velocity percentage or min turn velocity for low velocity turning
+            float higherRotationClamp = Mathf.Max(movementRotationMaxVelocity * Mathf.Abs(currentVelocity / maxVelocity), movementRotationMinTurnVelocity);
+            movementRotationValue = Mathf.Clamp(movementRotationValue, lowerRotationClamp, higherRotationClamp);
+        }
+        if (movementRotationDamped)
+        {
+            movementRotationValue = Mathf.SmoothDamp(movementRotationValue, movementRotationPower * movementStrafeMaxVelocity, ref movementRotationReference, timeToMaxVelocityRotation);
+        }
+        if (canMoveRotatation)
+        {
+            Quaternion movementTurnQuaternion = Quaternion.Euler(0.0f, movementRotationValue, 0.0f);//supports Y-axis turning only (XZ plane turning)
+            rigidbody.MoveRotation(rigidbody.rotation * movementTurnQuaternion);
+        }
+    }
+
+    private void handleStops()
+    {
+        if (movementForwardPower < 0.01f && movementForwardValue < 0.01f)
+        {
+            movementForwardValue = 0.0f;
+        }
+        if (movementStrafePower < 0.01f && movementStrafeValue < 0.01f)
+        {
+            movementStrafeValue = 0.0f;
+        }
+        if (movementRotationPower < 0.01f && movementRotationValue < 0.01f)
+        {
+            movementRotationValue = 0.0f;
+        }
+    }
+
+
+
+
+
+
+
+    /*Firing*/
+    private void handleFiring(){
 		leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
 		rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
 	}

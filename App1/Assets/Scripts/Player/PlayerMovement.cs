@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         turnAxisValue = Input.GetAxis(turnAxisName);
 
         playerMob.setPercentForwardPower(movementAxisValue);
-        playerMob.setPercentRotatePower(turnAxisValue);
+        playerMob.setPercentRotationPower(turnAxisValue);
     }
 
     private void FixedUpdate()

@@ -385,6 +385,7 @@ MonoBehaviour:
   changeDepthTime: 2
   health: 0
   maxHealth: 0
+  startOnFullHealth: 0
 --- !u!1 &915075828
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +504,7 @@ MonoBehaviour:
   changeDepthTime: 2
   health: 0
   maxHealth: 0
+  startOnFullHealth: 0
 --- !u!1 &928552591
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,22 +772,24 @@ MonoBehaviour:
   changeDepthTime: 2
   health: 0
   maxHealth: 0
+  startOnFullHealth: 0
   canMoveForward: 1
-  movementForwardPower: 0
+  movementForwardDamped: 1
   movementForwardMaxPower: 1
-  movementForwardMaxVelocity: 10
-  timeToMaxSpeedForward: 1
+  movementForwardMaxVelocity: 1
+  timeToMaxVelocityForward: 1
   canMoveStrafe: 0
-  movementStrafePower: 0
+  movementStrafeDamped: 0
   movementStrafeMaxPower: 1
   movementStrafeMaxVelocity: 5
-  timeToMaxSpeedStrafe: 0
-  canMoveRotate: 1
-  movementRotationRequiresForward: 0
+  timeToMaxVelocityStrafe: 0
+  canMoveRotatation: 0
   movementRotationDamped: 0
-  movementRotationDampTime: 1
-  movementRotationPower: 0
+  movementRotationScalesWithVelocity: 0
+  movementRotationMinTurnVelocity: 0
   movementRotationMaxPower: 1
+  movementRotationMaxVelocity: 0
+  timetoMaxVelocityRotation: 0
   projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
     type: 2}
   fireTransformLeft: {fileID: 2071053082}
@@ -911,6 +915,7 @@ MonoBehaviour:
   changeDepthTime: 2
   health: 0
   maxHealth: 0
+  startOnFullHealth: 0
 --- !u!1 &1956655237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1123,6 +1128,7 @@ MonoBehaviour:
   changeDepthTime: 2
   health: 0
   maxHealth: 0
+  startOnFullHealth: 0
 --- !u!1 &2071053081
 GameObject:
   m_ObjectHideFlags: 0
