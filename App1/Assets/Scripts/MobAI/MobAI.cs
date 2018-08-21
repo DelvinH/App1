@@ -40,7 +40,7 @@ public class MobAI : MonoBehaviour {
 	}
 
 	virtual public void CheckTarget(){
-		target = Globals.ThePlayer;
+		//target = Globals.ThePlayer;
 		AIState = AI_FOLLOW;
 	}
 

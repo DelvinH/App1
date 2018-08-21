@@ -13,14 +13,26 @@ public class Mob : DestructibleObject {
 	public bool canMoveForward = true;						//foward/backward
 	public float movementForwardPower = 0.0f;					//current force
 	public float movementForwardMaxPower = 1.0f;				//maximum force
-	public float movementForwardMaxVelocity = 10.0f;				//maximum velocity
+	public float movementForwardMaxVelocity = 10.0f;                //maximum velocity
+    public float timeToMaxSpeedForward;
+
+    private float movementForwardValue = 0f;
+    private float movementForwardReference;
+
 
 	public bool canMoveStrafe = false;						//left/right strafing
-	public float movementStrafingPower = 0.0f;
-	public float movementStrafingMaxPower = 1.0f;				
-	public float movementStrafingMaxVelocity = 5.0f;
+	public float movementStrafePower = 0.0f;
+	public float movementStrafeMaxPower = 1.0f;				
+	public float movementStrafeMaxVelocity = 5.0f;
+    public float timeToMaxSpeedStrafe;
 
-	public bool canMoveRotate = true;						//left/right turning
+    private float movementStrafeValue = 0f;
+    private float movementStrafeReference;
+
+
+
+
+    public bool canMoveRotate = true;						//left/right turning
 	public bool movementRotationRequiresForward = false;	//clamps max rotation power to forward speed
 	public bool movementRotationDamped = false;				//damped rotation
 	private float movementRotationCurrent = 0.0f;			//current rotation speed/value
@@ -45,7 +57,8 @@ public class Mob : DestructibleObject {
 	override public void Start ()
 	{
 		base.Start ();
-		//InitializeFactions ();
+        //InitializeFactions ();
+
 		leftIsReady = false;
 		rightIsReady = false;
 	}
@@ -72,7 +85,7 @@ public class Mob : DestructibleObject {
 	}
 
 	public void setStrafePower(float strafe){
-		movementStrafingPower = Mathf.Clamp (strafe, -movementStrafingMaxPower, movementStrafingMaxPower);
+		movementStrafePower = Mathf.Clamp (strafe, -movementStrafeMaxPower, movementStrafeMaxPower);
 	}
 
 	public void setRotatePower(float rotate){
@@ -84,7 +97,7 @@ public class Mob : DestructibleObject {
 	}
 
 	public void setPercentStrafePower(float percent){
-		setStrafePower (movementStrafingMaxPower * percent);
+		setStrafePower (movementStrafeMaxPower * percent);
 	}
 
 	public void setPercentRotatePower(float percent){
@@ -92,7 +105,30 @@ public class Mob : DestructibleObject {
 	}
 
 	void handleMovement(){
-		Vector3 forwardVector = transform.forward * movementForwardPower;
+
+        movementForwardValue = Mathf.SmoothDamp(movementForwardValue, movementForwardPower * movementForwardMaxVelocity, ref movementForwardReference, timeToMaxSpeedForward);
+        
+        if (canMoveForward)
+        {
+            rigidbody.MovePosition(rigidbody.position + transform.forward * movementForwardValue * Time.deltaTime);
+        }
+
+
+
+        movementStrafeValue = Mathf.SmoothDamp(movementStrafeValue, movementStrafePower * movementStrafeMaxVelocity, ref movementStrafeReference, timeToMaxSpeedStrafe);
+
+        if (canMoveStrafe)
+        {
+            rigidbody.MovePosition(rigidbody.position + transform.right * movementStrafeValue * Time.deltaTime);
+        }
+
+
+
+
+
+
+        /*v1
+         * Vector3 forwardVector = transform.forward * movementForwardPower;
 		Vector3 strafeVector = transform.right * movementStrafingPower;
 		if(canMoveForward)
 			rigidbody.AddForce (forwardVector);
@@ -101,7 +137,7 @@ public class Mob : DestructibleObject {
 				rigidbody.velocity = rigidbody.velocity.normalized * movementForwardMaxVelocity;
 			}
 
-		if(canMoveStrafe)
+		if(canMoveStrafe) 
 			rigidbody.AddForce (strafeVector);
 			
 			if (rigidbody.velocity.x >= movementStrafingMaxVelocity) {
@@ -126,8 +162,8 @@ public class Mob : DestructibleObject {
 		if (movementForwardPower < 0.01f && rigidbody.velocity.magnitude < 0.01f) {
 			rigidbody.velocity = Vector3.zero;
 		}
-
-	}
+        */
+    }
 
 	private void handleFiring(){
 		leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
@@ -171,4 +207,8 @@ public class Mob : DestructibleObject {
 		//Audio
 	}
 
+    public float currentSpeedPercentage()//for camera zoom when moving fast effect
+    {
+        return movementForwardValue / movementForwardMaxVelocity;
+    }
 }

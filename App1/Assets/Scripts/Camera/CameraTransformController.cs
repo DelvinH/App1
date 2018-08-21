@@ -10,7 +10,7 @@ public class CameraTransformController : MonoBehaviour
     private float cameraAngle;
     private float cameraHeight;
 
-    public float cameraTilt;
+    public Rigidbody playerRigidbody;
 	
 	private void Start ()
     {
@@ -18,7 +18,7 @@ public class CameraTransformController : MonoBehaviour
         cameraAngle = camera.GetComponent<CameraControl>().getCameraAngle();
         cameraHeight = camera.GetComponent<CameraControl>().getCameraHeight();
 
-        transform.position = new Vector3(0f, Mathf.Sin(Mathf.Deg2Rad * cameraAngle) * cameraDistance + cameraHeight, -Mathf.Cos(Mathf.Deg2Rad * cameraAngle) * cameraDistance);
+        transform.position = playerRigidbody.position + new Vector3(0f, cameraHeight, -cameraDistance);
 
         transform.rotation = Quaternion.Euler(cameraAngle, 0f, 0f);
 
@@ -30,7 +30,9 @@ public class CameraTransformController : MonoBehaviour
 	
 	private void Update ()
     {
-        transform.position = new Vector3(transform.position.x, Mathf.Sin(Mathf.Deg2Rad * cameraAngle) * cameraDistance + cameraHeight, transform.position.z);//keeps camera on same y plane
+        cameraDistance = camera.GetComponent<CameraControl>().getCameraDistance() + camera.GetComponent<CameraControl>().getCameraZoomDistance();
+        Debug.Log(cameraDistance);
+        transform.position = playerRigidbody.position + new Vector3(0, cameraHeight, -cameraDistance);//keeps camera on same y plane
     }
 
     public Transform GetTransform()

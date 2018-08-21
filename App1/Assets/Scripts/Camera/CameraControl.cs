@@ -13,6 +13,8 @@ public class CameraControl : MonoBehaviour
     public float cameraAngle;
     public float cameraHeight;
 
+    public float cameraZoomDistance;
+
     private Transform cameraTransform;
     private Vector3 moveVelocity;
     private Vector3 desiredPosition;
@@ -60,6 +62,15 @@ public class CameraControl : MonoBehaviour
     {
         return cameraHeight;
     }
+    
+    public float getCameraZoomDistance()
+    {
+        if (target.GetComponent<Mob>().currentSpeedPercentage() > 0.8f)
+        {
+            return target.GetComponent<Mob>().currentSpeedPercentage() * cameraZoomDistance;
+        }
 
+        return 0;
+    }
 }
 

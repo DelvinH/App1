@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -113,11 +113,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!54 &34308460 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 54595875893004476, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
-    type: 2}
-  m_PrefabInternal: {fileID: 278977138}
 --- !u!1001 &96503352
 Prefab:
   m_ObjectHideFlags: 0
@@ -237,40 +232,40 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalPosition.z
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4053985094896924, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+    - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ca6a7c7db9d048a4581a0e7c8acc27ff, type: 2}
+  m_SourcePrefab: {fileID: 100100000, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &707674584
 GameObject:
@@ -388,8 +383,8 @@ MonoBehaviour:
   atSurface: 1
   changeDepthSpeed: 0.5
   changeDepthTime: 2
-  health: 100
-  maxHealth: 100
+  health: 0
+  maxHealth: 0
 --- !u!1 &915075828
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,8 +501,8 @@ MonoBehaviour:
   atSurface: 1
   changeDepthSpeed: 0.5
   changeDepthTime: 2
-  health: 100
-  maxHealth: 100
+  health: 0
+  maxHealth: 0
 --- !u!1 &928552591
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,12 +559,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b650e5b319354c459c5d93daa0b7591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionDampSpeed: 20
+  positionDampSpeed: 30
   angleDampSpeed: 100
   target: {fileID: 1632113579}
-  cameraDistance: 4
-  cameraAngle: 25
+  cameraDistance: 2
+  cameraAngle: 15
   cameraHeight: 0.5
+  cameraZoomDistance: 0.03
 --- !u!4 &1121480467
 Transform:
   m_ObjectHideFlags: 0
@@ -709,7 +705,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1632113579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.23, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 928552592}
@@ -745,13 +741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0e05b684876e449b8b1f5699b55cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: {fileID: 54595875893004476, guid: ca6a7c7db9d048a4581a0e7c8acc27ff,
-    type: 2}
-  fireTransformLeft: {fileID: 2071053082}
-  fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 15
-  fireRate: 1
-  minSpeedMultiplier: 0.9
 --- !u!136 &1632113584
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -779,26 +768,29 @@ MonoBehaviour:
   atSurface: 1
   changeDepthSpeed: 0.5
   changeDepthTime: 2
-  health: 200
-  maxHealth: 200
+  health: 0
+  maxHealth: 0
   canMoveForward: 1
   movementForwardPower: 0
   movementForwardMaxPower: 1
   movementForwardMaxVelocity: 10
+  timeToMaxSpeedForward: 1
   canMoveStrafe: 0
-  movementStrafingPower: 0
-  movementStrafingMaxPower: 1
-  movementStrafingMaxVelocity: 5
+  movementStrafePower: 0
+  movementStrafeMaxPower: 1
+  movementStrafeMaxVelocity: 5
+  timeToMaxSpeedStrafe: 0
   canMoveRotate: 1
   movementRotationRequiresForward: 0
   movementRotationDamped: 0
   movementRotationDampTime: 1
   movementRotationPower: 0
   movementRotationMaxPower: 1
-  projectileType: {fileID: 34308460}
+  projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
+    type: 2}
   fireTransformLeft: {fileID: 2071053082}
   fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 15
+  fireSpeed: 10
   fireRate: 1
   minSpeedMultiplier: 0.9
 --- !u!1 &1713597102
@@ -917,8 +909,8 @@ MonoBehaviour:
   atSurface: 1
   changeDepthSpeed: 0.5
   changeDepthTime: 2
-  health: 100
-  maxHealth: 100
+  health: 0
+  maxHealth: 0
 --- !u!1 &1956655237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1129,8 +1121,8 @@ MonoBehaviour:
   atSurface: 1
   changeDepthSpeed: 0.5
   changeDepthTime: 2
-  health: 100
-  maxHealth: 100
+  health: 0
+  maxHealth: 0
 --- !u!1 &2071053081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,8 +1191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112c094c7fd4cbd478421286589552e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 2123174091}
-  cameraTilt: 0
+  camera: {fileID: 1121480465}
+  playerRigidbody: {fileID: 1632113582}
 --- !u!1 &2123174091
 GameObject:
   m_ObjectHideFlags: 0

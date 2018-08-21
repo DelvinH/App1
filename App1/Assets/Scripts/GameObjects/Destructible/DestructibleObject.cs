@@ -7,10 +7,15 @@ public class DestructibleObject : OurGameObject
 	public float health;
 	public float maxHealth;
 
+    public bool startOnFullHealth;
+
 	// Use this for initialization
 	override public void Start ()
     {
 		base.Start ();
+
+        if (startOnFullHealth)
+            health = maxHealth;
 	}
 	
 	// Update is called once per frame
