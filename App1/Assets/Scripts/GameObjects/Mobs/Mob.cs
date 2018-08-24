@@ -17,7 +17,7 @@ public class Mob : DestructibleObject {
 
     private float movementForwardPower = 0.0f;	        //current power input value
     private float movementForwardValue = 0.0f;          //current forward velocity
-    private float movementForwardReference;             //referenced used for Mathf.SmoothDamp
+    private float movementForwardReference = 0.0f;             //referenced used for Mathf.SmoothDamp
 
     //Right/Left movement
 	public bool canMoveStrafe = false;					//can move left/right
@@ -28,7 +28,7 @@ public class Mob : DestructibleObject {
 
     private float movementStrafePower = 0.0f;           //current power input value
     private float movementStrafeValue = 0.0f;           //current sideways velocity
-    private float movementStrafeReference;              //reference used for Mathf.SmoothDamp
+    private float movementStrafeReference = 0.0f;              //reference used for Mathf.SmoothDamp
 
     //Right/Left turning
     public bool canMoveRotatation = true;					    //can turn left/right
@@ -41,7 +41,7 @@ public class Mob : DestructibleObject {
 
     private float movementRotationPower = 0.0f;                 //current power input value
     private float movementRotationValue = 0.0f;                 //current angular velocity (degrees)
-    private float movementRotationReference;                    //reference used for Mathf.SmoothDamp
+    private float movementRotationReference = 0.0f;                    //reference used for Mathf.SmoothDamp
 
 
 
@@ -118,16 +118,17 @@ public class Mob : DestructibleObject {
 		setRotationPower (movementRotationMaxPower * percent);
 	}
 
-	void handleMovement(){
+	void handleMovement()//Status: Working
+    {
         handleForwardMovement();
         handleStrafeMovement();
         handleRotationMovement();
 
         handleStops();
 
-        Debug.Log("movementForwardValue: " + movementForwardValue);
-        Debug.Log("movementStrafeValue: " + movementStrafeValue);
-        Debug.Log("movementRotationValue: " + movementRotationValue);
+        //Debug.Log("movementForwardValue: " + movementForwardValue);
+        //Debug.Log("movementStrafeValue: " + movementStrafeValue);
+            Debug.Log("movementRotationValue: " + movementRotationValue);
 
         /*v1
          * Vector3 forwardVector = transform.forward * movementForwardPower;
@@ -167,26 +168,32 @@ public class Mob : DestructibleObject {
         */
     }
 
-    private void handleForwardMovement()
+    private void handleForwardMovement()//Status: Working
     {
-        movementForwardValue = movementForwardPower * movementForwardMaxVelocity;
         if (movementForwardDamped)
         {
             movementForwardValue = Mathf.SmoothDamp(movementForwardValue, movementForwardPower * movementForwardMaxVelocity, ref movementForwardReference, timeToMaxVelocityForward);
         }
+        else
+        {
+            movementForwardValue = movementForwardPower * movementForwardMaxVelocity;
+        }
         if (canMoveForward)
         {
-            Vector3 movementForwardVector = rigidbody.position + transform.forward * movementForwardValue * Time.deltaTime;
-            rigidbody.MovePosition(movementForwardVector);
+            Vector3 movementForwardVector = transform.forward * movementForwardValue * Time.deltaTime;
+            rigidbody.MovePosition(rigidbody.position + movementForwardVector);
         }
     }
 
-    private void handleStrafeMovement()
+    private void handleStrafeMovement()//Status: Working
     {
-        movementStrafeValue = movementStrafePower * movementStrafeMaxVelocity;
         if (movementStrafeDamped)
         {
             movementStrafeValue = Mathf.SmoothDamp(movementStrafeValue, movementStrafePower * movementStrafeMaxVelocity, ref movementStrafeReference, timeToMaxVelocityStrafe);
+        }
+        else
+        {
+            movementStrafeValue = movementStrafePower * movementStrafeMaxVelocity;
         }
         if (canMoveStrafe)
         {
@@ -195,40 +202,43 @@ public class Mob : DestructibleObject {
         }
     }
 
-    private void handleRotationMovement()
+    private void handleRotationMovement()//Status: Working
     {
-        movementRotationValue = movementRotationPower * movementRotationMaxVelocity;
+        if (movementRotationDamped)
+        {
+            movementRotationValue = Mathf.SmoothDamp(movementRotationValue, movementRotationPower * movementRotationMaxVelocity, ref movementRotationReference, timeToMaxVelocityRotation);
+        }
+        else
+        {
+            movementRotationValue = movementRotationPower * movementRotationMaxVelocity;
+        }
         if (movementRotationScalesWithVelocity)
         {
             float currentVelocity = Mathf.Sqrt(Mathf.Pow(movementForwardValue, 2) + Mathf.Pow(movementStrafeValue, 2));//XZ plane speed only; add Y dimension if needed
-            float maxVelocity = Mathf.Sqrt(Mathf.Pow(movementRotationMaxVelocity, 2) + Mathf.Pow(movementStrafeMaxVelocity, 2));
+            float maxVelocity = Mathf.Sqrt(Mathf.Pow(movementForwardMaxVelocity, 2) + Mathf.Pow(movementStrafeMaxVelocity, 2));
 
             float lowerRotationClamp = Mathf.Min(-movementRotationMaxVelocity * Mathf.Abs(currentVelocity / maxVelocity), -movementRotationMinTurnVelocity);//Sets clamp bounds to higher of velocity percentage or min turn velocity for low velocity turning
             float higherRotationClamp = Mathf.Max(movementRotationMaxVelocity * Mathf.Abs(currentVelocity / maxVelocity), movementRotationMinTurnVelocity);
             movementRotationValue = Mathf.Clamp(movementRotationValue, lowerRotationClamp, higherRotationClamp);
         }
-        if (movementRotationDamped)
-        {
-            movementRotationValue = Mathf.SmoothDamp(movementRotationValue, movementRotationPower * movementStrafeMaxVelocity, ref movementRotationReference, timeToMaxVelocityRotation);
-        }
         if (canMoveRotatation)
         {
-            Quaternion movementTurnQuaternion = Quaternion.Euler(0.0f, movementRotationValue, 0.0f);//supports Y-axis turning only (XZ plane turning)
+            Quaternion movementTurnQuaternion = Quaternion.Euler(0.0f, movementRotationValue * Time.deltaTime, 0.0f);//supports Y-axis turning only (XZ plane turning)
             rigidbody.MoveRotation(rigidbody.rotation * movementTurnQuaternion);
         }
     }
 
-    private void handleStops()
+    private void handleStops()//Status: Working
     {
-        if (movementForwardPower < 0.01f && movementForwardValue < 0.01f)
+        if (Mathf.Abs(movementForwardPower) < 0.01f && Mathf.Abs(movementForwardValue) < 0.01f)
         {
             movementForwardValue = 0.0f;
         }
-        if (movementStrafePower < 0.01f && movementStrafeValue < 0.01f)
+        if (Mathf.Abs(movementStrafePower) < 0.01f && Mathf.Abs(movementStrafeValue) < 0.01f)
         {
             movementStrafeValue = 0.0f;
         }
-        if (movementRotationPower < 0.01f && movementRotationValue < 0.01f)
+        if (Mathf.Abs(movementRotationPower) < 0.01f && Mathf.Abs(movementRotationValue) < 0.01f)
         {
             movementRotationValue = 0.0f;
         }

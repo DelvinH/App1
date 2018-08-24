@@ -384,8 +384,8 @@ MonoBehaviour:
   changeDepthSpeed: 0.5
   changeDepthTime: 2
   health: 0
-  maxHealth: 0
-  startOnFullHealth: 0
+  maxHealth: 1000
+  startOnFullHealth: 1
 --- !u!1 &915075828
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,8 +503,8 @@ MonoBehaviour:
   changeDepthSpeed: 0.5
   changeDepthTime: 2
   health: 0
-  maxHealth: 0
-  startOnFullHealth: 0
+  maxHealth: 1000
+  startOnFullHealth: 1
 --- !u!1 &928552591
 GameObject:
   m_ObjectHideFlags: 0
@@ -707,7 +707,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1632113579}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.23, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 928552592}
@@ -776,26 +776,26 @@ MonoBehaviour:
   canMoveForward: 1
   movementForwardDamped: 1
   movementForwardMaxPower: 1
-  movementForwardMaxVelocity: 1
-  timeToMaxVelocityForward: 1
+  movementForwardMaxVelocity: 5
+  timeToMaxVelocityForward: 0.3
   canMoveStrafe: 0
   movementStrafeDamped: 0
   movementStrafeMaxPower: 1
-  movementStrafeMaxVelocity: 5
-  timeToMaxVelocityStrafe: 0
-  canMoveRotatation: 0
-  movementRotationDamped: 0
-  movementRotationScalesWithVelocity: 0
-  movementRotationMinTurnVelocity: 0
+  movementStrafeMaxVelocity: 0
+  timeToMaxVelocityStrafe: 0.5
+  canMoveRotatation: 1
+  movementRotationDamped: 1
+  movementRotationScalesWithVelocity: 1
+  movementRotationMinTurnVelocity: 15
   movementRotationMaxPower: 1
-  movementRotationMaxVelocity: 0
-  timetoMaxVelocityRotation: 0
+  movementRotationMaxVelocity: 60
+  timeToMaxVelocityRotation: 0.2
   projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
     type: 2}
   fireTransformLeft: {fileID: 2071053082}
   fireTransformRight: {fileID: 1956655238}
   fireSpeed: 10
-  fireRate: 1
+  fireRate: 10
   minSpeedMultiplier: 0.9
 --- !u!1 &1713597102
 GameObject:
@@ -914,8 +914,8 @@ MonoBehaviour:
   changeDepthSpeed: 0.5
   changeDepthTime: 2
   health: 0
-  maxHealth: 0
-  startOnFullHealth: 0
+  maxHealth: 1000
+  startOnFullHealth: 1
 --- !u!1 &1956655237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1127,8 +1127,8 @@ MonoBehaviour:
   changeDepthSpeed: 0.5
   changeDepthTime: 2
   health: 0
-  maxHealth: 0
-  startOnFullHealth: 0
+  maxHealth: 1000
+  startOnFullHealth: 1
 --- !u!1 &2071053081
 GameObject:
   m_ObjectHideFlags: 0

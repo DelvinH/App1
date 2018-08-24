@@ -62,15 +62,5 @@ public class CameraControl : MonoBehaviour
     {
         return cameraHeight;
     }
-    
-    public float getCameraZoomDistance()
-    {
-        if (target.GetComponent<Mob>().currentSpeedPercentage() > 0.8f)
-        {
-            return target.GetComponent<Mob>().currentSpeedPercentage() * cameraZoomDistance;
-        }
-
-        return 0;
-    }
 }
 
