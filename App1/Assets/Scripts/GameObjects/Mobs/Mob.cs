@@ -53,19 +53,12 @@ public class Mob : DestructibleObject {
 	public float fireRate;
 	public float minSpeedMultiplier;//varies torpedo speed
 
-	private float timeSinceLastFireLeft;
-	private float timeSinceLastFireRight;
-	private bool leftIsReady;
-	private bool rightIsReady;
-
 	// Use this for initialization
 	override public void Start ()
 	{
 		base.Start ();
         //InitializeFactions ();
 
-		leftIsReady = false;
-		rightIsReady = false;
 	}
 
 	// Update is called once per frame
@@ -128,7 +121,7 @@ public class Mob : DestructibleObject {
 
         //Debug.Log("movementForwardValue: " + movementForwardValue);
         //Debug.Log("movementStrafeValue: " + movementStrafeValue);
-            Debug.Log("movementRotationValue: " + movementRotationValue);
+            //Debug.Log("movementRotationValue: " + movementRotationValue);
 
         /*v1
          * Vector3 forwardVector = transform.forward * movementForwardPower;
@@ -252,46 +245,13 @@ public class Mob : DestructibleObject {
 
     /*Firing*/
     private void handleFiring(){
-		leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
-		rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
+	
 	}
 
 	public void tryFire(){
-		if (leftIsReady && rightIsReady) {
-			float rand = Random.value - 0.5f;
-			if (rand <= 0) {
-				doFireLeft ();
-			} else if (rand > 0) {
-				doFireRight ();
-			}
-			//Debug.Log(rand + "rand");
-		} else if (leftIsReady) {
-			doFireLeft ();
-		} else if (rightIsReady) {
-			doFireRight ();
-		}
-
+	
 	}
 
-	public void doFireLeft()
-	{
-		//Debug.Log("firedleft");
-		Rigidbody projectileLeft = Instantiate(projectileType, fireTransformLeft.position, transform.rotation) as Rigidbody;
-		projectileLeft.velocity = fireTransformLeft.forward * fireSpeed * Random.Range(minSpeedMultiplier, 1);
-		leftIsReady = false;
-		timeSinceLastFireLeft = Time.time;
-		//Audio
-	}
-
-	public void doFireRight()
-	{
-		//Debug.Log("firedright");
-		Rigidbody projectileRight = Instantiate(projectileType, fireTransformRight.position, transform.rotation) as Rigidbody;
-		projectileRight.velocity = fireTransformRight.forward * fireSpeed * Random.Range(minSpeedMultiplier, 1);
-		rightIsReady = false;
-		timeSinceLastFireRight = Time.time;
-		//Audio
-	}
 
     public float currentSpeedPercentage()//for camera zoom when moving fast effect
     {

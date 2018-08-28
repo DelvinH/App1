@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -263,6 +263,16 @@ Prefab:
     - target: {fileID: 4619028749183564, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
       propertyPath: m_RootOrder
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114471420347000616, guid: 4335ff2632cb16749b9ccc869423f289,
+        type: 2}
+      propertyPath: torpedoSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114471420347000616, guid: 4335ff2632cb16749b9ccc869423f289,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
@@ -582,6 +592,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1535057335 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
+    type: 2}
+  m_PrefabInternal: {fileID: 278977138}
 --- !u!1 &1604101289
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +758,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0e05b684876e449b8b1f5699b55cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileType: {fileID: 1535057335}
+  fireTransformLeft: {fileID: 2071053082}
+  fireTransformRight: {fileID: 1956655238}
+  fireSpeed: 2
+  fireRate: 1
 --- !u!136 &1632113584
 CapsuleCollider:
   m_ObjectHideFlags: 0
