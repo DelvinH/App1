@@ -7,6 +7,7 @@ public enum MobFactions {Neutral, Player, Hostile};
 public class Mob : DestructibleObject {
 
     //Default values are included
+	protected Rigidbody rigidbody;
 
     //Forward/Backward movement
     public bool canMoveForward = true;                  //can move forward/backward
@@ -53,10 +54,18 @@ public class Mob : DestructibleObject {
 	public float fireRate;
 	public float minSpeedMultiplier;//varies torpedo speed
 
+	//Submerging
+	public bool atSurface = true;
+	private bool changingDepth = false;
+	public float changeDepthSpeed = 0.5f;
+	public float changeDepthTime = 2f;
+
+
 	// Use this for initialization
 	override public void Start ()
 	{
 		base.Start ();
+		rigidbody = gameObject.GetComponent<Rigidbody> ();
         //InitializeFactions ();
 
 	}
@@ -67,9 +76,10 @@ public class Mob : DestructibleObject {
 		base.Update ();
 		handleFiring ();
 	}
-
+	
 	override public void FixedUpdate(){
 		handleMovement ();
+		RestrainMovement ();
 		base.FixedUpdate ();
 	}
 
@@ -238,6 +248,63 @@ public class Mob : DestructibleObject {
     }
 
 
+	public bool ToggleDepth()
+	{	
+		if (changingDepth) {
+			return false;
+		}
+		bool target = !atSurface;
+		IEnumerator coroutine = ChangeDepth (target);
+		return true;
+	}
+
+	private IEnumerator ChangeDepth(bool atSurface)
+	{
+		Vector3 movement;
+		float timeElapsed = Time.time;
+		changingDepth = true;
+
+		if (atSurface)
+		{
+			this.atSurface = false;//submarine leaves surface plane at beginning of dive
+			//Audio
+		}
+
+		while (Time.time - timeElapsed < changeDepthTime)
+		{
+			if (atSurface)//if loop must be in while loop for proper Time.deltaTime values
+				movement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//negative makes submarine go down
+			else
+				movement = transform.up * changeDepthSpeed * Time.deltaTime;//positive makes submarine go up
+			rigidbody.MovePosition(rigidbody.position + movement);
+			yield return null;
+		}
+
+		if (!atSurface)
+		{
+			this.atSurface = true;//submarine enters surface plane at end of surface
+			//Audio
+		}
+
+		changingDepth = false;
+	}
+
+	public bool getChangingDepth()
+	{
+		return changingDepth;
+	}
+
+	private void RestrainMovement()//makes sure player is on game plane (y=0 for surface, y=-1 for submerged)
+	{
+		if (Mathf.Abs(transform.position.y + 1f) < Mathf.Abs(transform.position.y) && !changingDepth)//closer to -1
+		{
+			transform.position = new Vector3(transform.position.x, -1, transform.position.z);
+		}
+		else if (Mathf.Abs(transform.position.y + 1f) > Mathf.Abs(transform.position.y) && !changingDepth)//closer to 0
+		{
+			transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+		}
+	} 
 
 
 

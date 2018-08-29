@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestructibleObject : OurGameObject
+public class DestructibleObject : MonoBehaviour
 {
 	public float health;
 	public float maxHealth;
@@ -10,18 +10,18 @@ public class DestructibleObject : OurGameObject
     public bool startOnFullHealth;
 
 	// Use this for initialization
-	override public void Start ()
+	virtual public void Start ()
     {
-		base.Start ();
-
         if (startOnFullHealth)
             health = maxHealth;
 	}
 	
 	// Update is called once per frame
-	override public void Update ()
+	virtual public void Update ()
     {
-		base.Update ();
+	}
+
+	virtual public void FixedUpdate(){
 	}
 
 	public float GetHealth()
