@@ -122,7 +122,11 @@ public class Mob : DestructibleObject {
         //Debug.Log("movementForwardValue: " + movementForwardValue);
         //Debug.Log("movementStrafeValue: " + movementStrafeValue);
 <<<<<<< HEAD
+<<<<<<< HEAD
         //Debug.Log("movementRotationValue: " + movementRotationValue);
+=======
+            //Debug.Log("movementRotationValue: " + movementRotationValue);
+>>>>>>> 8ff2ea924eeb58f5151b3b3e0e06f4b13db2d95d
 =======
             //Debug.Log("movementRotationValue: " + movementRotationValue);
 >>>>>>> 8ff2ea924eeb58f5151b3b3e0e06f4b13db2d95d
