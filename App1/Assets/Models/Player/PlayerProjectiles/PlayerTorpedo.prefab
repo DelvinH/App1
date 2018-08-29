@@ -22749,6 +22749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d3400aab840933419f127829290fe25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigidbody: {fileID: 54184349913173994}
   torpedoMask:
     serializedVersion: 2
     m_Bits: 512
@@ -22757,7 +22758,10 @@ MonoBehaviour:
   minDamage: 40
   maxLifetime: 10
   explosionRadius: 1
+  torpedoSpeed: 20
   homing: 0
+  doesDOT: 1
+  timeForDOT: 0.3
 --- !u!136 &136579494257062898
 CapsuleCollider:
   m_ObjectHideFlags: 1

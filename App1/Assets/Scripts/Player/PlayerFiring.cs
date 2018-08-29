@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class PlayerFiring : MonoBehaviour
 {
-	private Mob holder;
-	private float timeSinceLastFireLeft;
+	private Mob playerMob;
+    /*private float timeSinceLastFireLeft;
 	private float timeSinceLastFireRight;
 	private bool leftIsReady;
-	private bool rightIsReady;
+	private bool rightIsReady;*/
+    private bool rightFire = true; //for alternating fire
+    private float timeForNextFire = 0.0f;//used for reloading delay
 
 	public Rigidbody projectileType;
 	public Transform fireTransformLeft;
 	public Transform fireTransformRight;
-	public float fireSpeed;
-	public float fireRate;
+    public float fireRate;//shots per second
 
     private void OnEnable()
     {
-		holder = gameObject.GetComponent<Mob>();
-		if (!holder) {
+		playerMob = gameObject.GetComponent<Mob>();
+		if (!playerMob) {
 			Debug.LogWarning ("Warning: Player firing assigned to non mob.", this);
 			Destroy (this);
 		}
-        //possible ammo indicator
     }
 
     private void Start()
@@ -34,15 +34,15 @@ public class PlayerFiring : MonoBehaviour
 
     private void Update()
     {
-		handleFiring ();
-        if (Input.GetButtonDown("Fire1") && !gameObject.GetComponent<Mob>().getChangingDepth())//randomizes the side that fires if both are ready
+        if (Input.GetButton/*Down*/("Fire1") && !gameObject.GetComponent<Mob>().getChangingDepth())
         {
-			tryFire ();
+            handleFiring();
+            //tryFire ();
         }
     }
 
-	public void tryFire(){
-		if (leftIsReady && rightIsReady) {
+	/*public void tryFire(){
+		if (leftIsReady && rightIsReady) {//randomizes the side that fires if both are ready
 			float rand = Random.value - 0.5f;
 			if (rand <= 0) {
 				doFireLeft ();
@@ -56,15 +56,31 @@ public class PlayerFiring : MonoBehaviour
 			doFireRight ();
 		}
 
-	}
+	}*/
 
 	/*Firing*/
-	private void handleFiring(){
-		leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
-		rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
+	private void handleFiring()
+    {
+        if (Time.time > timeForNextFire)
+        {
+            timeForNextFire = Time.time + 1 / fireRate;
+            if (rightFire)
+            {
+                Debug.Log("fireRight");
+                Instantiate(projectileType, fireTransformRight.position, fireTransformRight.rotation);
+            } else
+            {
+                Debug.Log("fireLeft");
+                Instantiate(projectileType, fireTransformLeft.position, fireTransformLeft.rotation);
+            }
+            rightFire = !rightFire;
+        }
+
+		//leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
+		//rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;
 	}
 
-	public void doFireLeft()
+	/*public void doFireLeft()
 	{
 		//Debug.Log("firedleft");
 		Rigidbody projectileLeft = Instantiate(projectileType, fireTransformLeft.position, transform.rotation) as Rigidbody;
@@ -84,6 +100,5 @@ public class PlayerFiring : MonoBehaviour
 		rightIsReady = false;
 		timeSinceLastFireRight = Time.time;
 		//Audio
-	}
-
+	}*/
 }

@@ -15,9 +15,9 @@ public class Mob : DestructibleObject {
 	public float movementForwardMaxVelocity = 10.0f;    //maximum velocity
     public float timeToMaxVelocityForward = 1.0f;       //time to accelerate to max velocity
 
-    private float movementForwardPower = 0.0f;	        //current power input value
-    private float movementForwardValue = 0.0f;          //current forward velocity
-    private float movementForwardReference = 0.0f;             //referenced used for Mathf.SmoothDamp
+    protected float movementForwardPower = 0.0f;	    //current power input value
+    protected float movementForwardValue = 0.0f;        //current forward velocity
+    protected float movementForwardReference = 0.0f;    //referenced used for Mathf.SmoothDamp
 
     //Right/Left movement
 	public bool canMoveStrafe = false;					//can move left/right
@@ -26,27 +26,32 @@ public class Mob : DestructibleObject {
 	public float movementStrafeMaxVelocity = 2.0f;      //maximum velocity
     public float timeToMaxVelocityStrafe = 2.0f;        //time to accelerate to max velocity
 
-    private float movementStrafePower = 0.0f;           //current power input value
-    private float movementStrafeValue = 0.0f;           //current sideways velocity
-    private float movementStrafeReference = 0.0f;              //reference used for Mathf.SmoothDamp
+    protected float movementStrafePower = 0.0f;         //current power input value
+    protected float movementStrafeValue = 0.0f;         //current sideways velocity
+    protected float movementStrafeReference = 0.0f;     //reference used for Mathf.SmoothDamp
 
     //Right/Left turning
     public bool canMoveRotatation = true;					    //can turn left/right
     public bool movementRotationDamped = true;                  //accelerates instantly if false
-	public bool movementRotationScalesWithVelocity = true;	    //max turning speed scales with percentage of max translational velocity
-    public float movementRotationMinTurnVelocity = 15.0f;       //can turn at up to this velocity even if movementRotationScalesWithVelocity wouldn't allow it
 	public float movementRotationMaxPower = 1.0f;               //maximum power input value
     public float movementRotationMaxVelocity = 90.0f;           //maximum velocity (degrees)
     public float timeToMaxVelocityRotation = 2.0f;              //time to accelerate to max velocity
 
-    private float movementRotationPower = 0.0f;                 //current power input value
-    private float movementRotationValue = 0.0f;                 //current angular velocity (degrees)
-    private float movementRotationReference = 0.0f;                    //reference used for Mathf.SmoothDamp
+    protected float movementRotationPower = 0.0f;               //current power input value
+    protected float movementRotationValue = 0.0f;               //current angular velocity (degrees)
+    protected float movementRotationReference = 0.0f;           //reference used for Mathf.SmoothDamp
+
+    //Changing depth movement
+    public bool atSurface = true;
+    public float changeDepthTime = 1.0f;
+    public float depthChanged = 1.0f;
+
+    protected bool changingDepth = false;
+    protected float changeDepthSpeed = 1.0f;//This equals depthChanged / changeDepthTime
 
 
-
-	//Mob firing
-	public Rigidbody projectileType;
+    //Mob firing
+    public Rigidbody projectileType;
 	public Transform fireTransformLeft;
 	public Transform fireTransformRight;
 	public float fireSpeed;
@@ -59,6 +64,7 @@ public class Mob : DestructibleObject {
 		base.Start ();
         //InitializeFactions ();
 
+        changeDepthSpeed = depthChanged / changeDepthTime;
 	}
 
 	// Update is called once per frame
@@ -68,9 +74,11 @@ public class Mob : DestructibleObject {
 		handleFiring ();
 	}
 
-	override public void FixedUpdate(){
+	override public void FixedUpdate()
+    {
 		handleMovement ();
 		base.FixedUpdate ();
+        RestrainMovement();
 	}
 
 	/*public virtual void InitializeFactions(){
@@ -111,7 +119,7 @@ public class Mob : DestructibleObject {
 		setRotationPower (movementRotationMaxPower * percent);
 	}
 
-	void handleMovement()//Status: Working
+	virtual protected void handleMovement()//Status: Working
     {
         handleForwardMovement();
         handleStrafeMovement();
@@ -121,55 +129,10 @@ public class Mob : DestructibleObject {
 
         //Debug.Log("movementForwardValue: " + movementForwardValue);
         //Debug.Log("movementStrafeValue: " + movementStrafeValue);
-<<<<<<< HEAD
-<<<<<<< HEAD
         //Debug.Log("movementRotationValue: " + movementRotationValue);
-=======
-            //Debug.Log("movementRotationValue: " + movementRotationValue);
->>>>>>> 8ff2ea924eeb58f5151b3b3e0e06f4b13db2d95d
-=======
-            //Debug.Log("movementRotationValue: " + movementRotationValue);
->>>>>>> 8ff2ea924eeb58f5151b3b3e0e06f4b13db2d95d
-
-        /*v1
-         * Vector3 forwardVector = transform.forward * movementForwardPower;
-		Vector3 strafeVector = transform.right * movementStrafingPower;
-		if(canMoveForward)
-			rigidbody.AddForce (forwardVector);
-
-			if (rigidbody.velocity.z >= movementForwardMaxVelocity) {
-				rigidbody.velocity = rigidbody.velocity.normalized * movementForwardMaxVelocity;
-			}
-
-		if(canMoveStrafe) 
-			rigidbody.AddForce (strafeVector);
-			
-			if (rigidbody.velocity.x >= movementStrafingMaxVelocity) {
-				rigidbody.velocity = rigidbody.velocity.normalized * movementStrafingMaxVelocity;
-			}
-
-		else {
-			rigidbody.velocity = transform.forward * rigidbody.velocity.magnitude;		//prevents drifting if we can't strafe
-		}
-
-		float rotate = movementRotationPower;
-		if(movementRotationRequiresForward) {
-			rotate = Mathf.Clamp (movementRotationPower, -movementRotationMaxPower * Mathf.Abs (rigidbody.velocity.z / movementForwardMaxVelocity), movementRotationMaxPower * Mathf.Abs (rigidbody.velocity.z / movementForwardMaxVelocity));
-		}
-		if (movementRotationDamped) {
-			movementRotationCurrent = Mathf.SmoothDamp (movementRotationCurrent, rotate, ref movementRotationCurrent, movementRotationDampTime, movementRotationMaxPower);
-			rotate = movementRotationCurrent;
-		}
-		Quaternion turnRotation = Quaternion.Euler(0f, rotate, 0f);
-		rigidbody.MoveRotation(rigidbody.rotation * turnRotation);
-		//Full stop when not enough force to keep moving
-		if (movementForwardPower < 0.01f && rigidbody.velocity.magnitude < 0.01f) {
-			rigidbody.velocity = Vector3.zero;
-		}
-        */
     }
 
-    private void handleForwardMovement()//Status: Working
+    virtual protected void handleForwardMovement()//Status: Working
     {
         if (movementForwardDamped)
         {
@@ -186,7 +149,7 @@ public class Mob : DestructibleObject {
         }
     }
 
-    private void handleStrafeMovement()//Status: Working
+    virtual protected void handleStrafeMovement()//Status: Working
     {
         if (movementStrafeDamped)
         {
@@ -203,7 +166,7 @@ public class Mob : DestructibleObject {
         }
     }
 
-    private void handleRotationMovement()//Status: Working
+    virtual protected void handleRotationMovement()//Status: Working
     {
         if (movementRotationDamped)
         {
@@ -213,18 +176,10 @@ public class Mob : DestructibleObject {
         {
             movementRotationValue = movementRotationPower * movementRotationMaxVelocity;
         }
-        if (movementRotationScalesWithVelocity)
-        {
-            float currentVelocity = Mathf.Sqrt(Mathf.Pow(movementForwardValue, 2) + Mathf.Pow(movementStrafeValue, 2));//XZ plane speed only; add Y dimension if needed
-            float maxVelocity = Mathf.Sqrt(Mathf.Pow(movementForwardMaxVelocity, 2) + Mathf.Pow(movementStrafeMaxVelocity, 2));
-
-            float lowerRotationClamp = Mathf.Min(-movementRotationMaxVelocity * Mathf.Abs(currentVelocity / maxVelocity), -movementRotationMinTurnVelocity);//Sets clamp bounds to higher of velocity percentage or min turn velocity for low velocity turning
-            float higherRotationClamp = Mathf.Max(movementRotationMaxVelocity * Mathf.Abs(currentVelocity / maxVelocity), movementRotationMinTurnVelocity);
-            movementRotationValue = Mathf.Clamp(movementRotationValue, lowerRotationClamp, higherRotationClamp);
-        }
+        
         if (canMoveRotatation)
         {
-            Quaternion movementTurnQuaternion = Quaternion.Euler(0.0f, movementRotationValue * Time.deltaTime, 0.0f);//supports Y-axis turning only (XZ plane turning)
+            Quaternion movementTurnQuaternion = Quaternion.Euler(0.0f, movementRotationValue * Time.deltaTime, 0.0f);
             rigidbody.MoveRotation(rigidbody.rotation * movementTurnQuaternion);
         }
     }
@@ -245,10 +200,63 @@ public class Mob : DestructibleObject {
         }
     }
 
+    public bool ChangeDepth()//Status: Working
+    {
+        if (changingDepth)
+        {
+            return false;
+        }
+        StartCoroutine(ChangeDepthCoroutine(atSurface));
+        return true;
+    }
 
+    private IEnumerator ChangeDepthCoroutine(bool atSurface)//Status: Working
+    {
+        Vector3 movement;
+        float timeAtStart = Time.time;
+        changingDepth = true;
 
+        if (atSurface)
+        {
+            this.atSurface = false;//submarine leaves surface plane at beginning of dive
+            //Audio
+        }
 
+        while (Time.time - timeAtStart < changeDepthTime)
+        {
+            if (atSurface)//if loop must be in while loop for proper Time.deltaTime values
+                movement = transform.up * changeDepthSpeed * Time.deltaTime * -1f;//negative makes submarine go down
+            else
+                movement = transform.up * changeDepthSpeed * Time.deltaTime;//positive makes submarine go up
+            rigidbody.MovePosition(rigidbody.position + movement);
+            yield return null;
+        }
 
+        if (!atSurface)
+        {
+            this.atSurface = true;//submarine enters surface plane at end of surface
+            //Audio
+        }
+
+        changingDepth = false;
+    }
+
+    public bool getChangingDepth()//Status: Working
+    {
+        return changingDepth;
+    }
+
+    private void RestrainMovement()//Status: Working
+    {//makes sure mob is on game plane (y=0 for surface, y=-1 for submerged)
+        if (Mathf.Abs(transform.position.y + 1f) < Mathf.Abs(transform.position.y) && !changingDepth)//closer to -1
+        {
+            transform.position = new Vector3(transform.position.x, -1, transform.position.z);
+        }
+        else if (Mathf.Abs(transform.position.y + 1f) > Mathf.Abs(transform.position.y) && !changingDepth)//closer to 0
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
+    }
 
 
     /*Firing*/
@@ -259,10 +267,4 @@ public class Mob : DestructibleObject {
 	public void tryFire(){
 	
 	}
-
-
-    public float currentSpeedPercentage()//for camera zoom when moving fast effect
-    {
-        return movementForwardValue / movementForwardMaxVelocity;
-    }
 }

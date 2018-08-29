@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerTorpedoController : MonoBehaviour
 {
-	public LayerMask torpedoMask;
+    public Rigidbody rigidbody;
+    public LayerMask torpedoMask;
     public float ignoreMaskNumber;
 	public float maxDamage;
 	public float minDamage;
@@ -12,6 +13,8 @@ public class PlayerTorpedoController : MonoBehaviour
 	public float explosionRadius;
 	public float torpedoSpeed;
     public bool homing;
+    public bool doesDOT;
+    public float timeForDOT;
 
     private float torpedoDamage;
 
@@ -30,7 +33,12 @@ public class PlayerTorpedoController : MonoBehaviour
         }
     }
 
-	public void Activate(){
+    private void FixedUpdate()
+    {
+        rigidbody.MovePosition(rigidbody.position + transform.forward * torpedoSpeed * Time.deltaTime);
+    }
+
+    public void Activate(){
 		Destroy(gameObject, maxLifetime);
 	}
 
@@ -56,7 +64,15 @@ public class PlayerTorpedoController : MonoBehaviour
 		DestructibleObject targetObject = target.GetComponent<DestructibleObject>();
 		if (!targetObject) 
 			return;
-		targetObject.TakeDamage(torpedoDamage);
+        if (doesDOT)
+        {
+            targetObject.TakeDamageOverTime(torpedoDamage, timeForDOT);
+        }
+        else
+        {
+            targetObject.TakeDamage(torpedoDamage);
+        }
+		
 	}
 
 	private void TorpedoEffects()

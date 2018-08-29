@@ -15,7 +15,7 @@ public class CameraControl : MonoBehaviour
     public float cameraHeight = 1.5f;
 
     private Transform cameraTransform;
-    private Vector3 moveVelocity;
+    //private Vector3 moveVelocity;
     private Vector3 desiredPosition;
     private Quaternion desiredRotation;
 
