@@ -10,6 +10,7 @@ public class PlayerTorpedoController : MonoBehaviour
 	public float minDamage;
 	public float maxLifetime;
 	public float explosionRadius;
+	public float torpedoSpeed;
     public bool homing;
 
     private float torpedoDamage;
@@ -17,7 +18,6 @@ public class PlayerTorpedoController : MonoBehaviour
     
     void Start()
     {
-        Destroy(gameObject, maxLifetime);
         torpedoDamage = Random.Range(minDamage, maxDamage);
     }
 
@@ -30,6 +30,9 @@ public class PlayerTorpedoController : MonoBehaviour
         }
     }
 
+	public void Activate(){
+		Destroy(gameObject, maxLifetime);
+	}
 
     private void OnTriggerEnter(Collider other)
     {

@@ -564,10 +564,9 @@ MonoBehaviour:
   positionDampSpeed: 30
   angleDampSpeed: 100
   target: {fileID: 1632113579}
-  cameraDistance: 2
-  cameraAngle: 15
-  cameraHeight: 0.5
-  cameraZoomDistance: 0.03
+  cameraDistance: 4
+  cameraAngle: 20
+  cameraHeight: 1.5
 --- !u!4 &1121480467
 Transform:
   m_ObjectHideFlags: 0
@@ -582,6 +581,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1535057335 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
+    type: 2}
+  m_PrefabInternal: {fileID: 278977138}
 --- !u!1 &1604101289
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,7 +667,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1604101289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -743,6 +747,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0e05b684876e449b8b1f5699b55cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileType: {fileID: 1535057335}
+  fireTransformLeft: {fileID: 2071053082}
+  fireTransformRight: {fileID: 1956655238}
+  fireSpeed: 2
+  fireRate: 1
 --- !u!136 &1632113584
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -776,7 +785,7 @@ MonoBehaviour:
   canMoveForward: 1
   movementForwardDamped: 1
   movementForwardMaxPower: 1
-  movementForwardMaxVelocity: 5
+  movementForwardMaxVelocity: 8
   timeToMaxVelocityForward: 0.3
   canMoveStrafe: 0
   movementStrafeDamped: 0
@@ -786,16 +795,16 @@ MonoBehaviour:
   canMoveRotatation: 1
   movementRotationDamped: 1
   movementRotationScalesWithVelocity: 1
-  movementRotationMinTurnVelocity: 15
+  movementRotationMinTurnVelocity: 20
   movementRotationMaxPower: 1
-  movementRotationMaxVelocity: 60
-  timeToMaxVelocityRotation: 0.2
+  movementRotationMaxVelocity: 80
+  timeToMaxVelocityRotation: 0
   projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
     type: 2}
   fireTransformLeft: {fileID: 2071053082}
   fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 10
-  fireRate: 10
+  fireSpeed: 20
+  fireRate: 5
   minSpeedMultiplier: 0.9
 --- !u!1 &1713597102
 GameObject:
@@ -1277,8 +1286,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2123174091}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1121480467}

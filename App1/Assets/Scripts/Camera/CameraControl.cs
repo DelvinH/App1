@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 { 
-    public float positionDampSpeed;
-    public float angleDampSpeed;
+    //Default values are included
+    //public float positionDampSpeed;
+    //public float angleDampSpeed;
     //public float maxDistanceInFront;
     public GameObject target;
 
-    public float cameraDistance;
-    public float cameraAngle;
-    public float cameraHeight;
-
-    public float cameraZoomDistance;
+    public float cameraDistance = 4.0f;
+    public float cameraAngle = 20.0f;
+    public float cameraHeight = 1.5f;
 
     private Transform cameraTransform;
     private Vector3 moveVelocity;
@@ -25,7 +24,7 @@ public class CameraControl : MonoBehaviour
         cameraTransform = target.GetComponentInChildren<CameraTransformController>().GetTransform();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Move();
         //Debug.Log(moveVelocity.magnitude);
@@ -35,9 +34,9 @@ public class CameraControl : MonoBehaviour
     {
         GetDesiredPosition();
 
-        transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, 1 / positionDampSpeed);
+        transform.position = desiredPosition;// Vector3.SmoothDamp(transform.position, desiredPosition, ref moveVelocity, 1 / positionDampSpeed);
 
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, desiredRotation, Mathf.Clamp(target.GetComponent<Rigidbody>().angularVelocity.magnitude, 1, target.GetComponent<Rigidbody>().angularVelocity.magnitude) * angleDampSpeed * Time.deltaTime);
+        transform.rotation = desiredRotation;// Quaternion.RotateTowards(transform.rotation, desiredRotation, Mathf.Clamp(target.GetComponent<Rigidbody>().angularVelocity.magnitude, 1, target.GetComponent<Rigidbody>().angularVelocity.magnitude) * angleDampSpeed * Time.deltaTime);
     }
 
     private void GetDesiredPosition()
