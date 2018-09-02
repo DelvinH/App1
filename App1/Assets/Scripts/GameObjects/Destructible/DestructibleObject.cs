@@ -11,7 +11,7 @@ public class DestructibleObject : MonoBehaviour
     public float health;
     private bool currentlyTakingDamage = false;
 
-	virtual public void Start ()
+	virtual public void Start()
     {
         health = maxHealth;
         rigidbody = gameObject.GetComponent<Rigidbody>();
@@ -21,7 +21,7 @@ public class DestructibleObject : MonoBehaviour
         }
     }
 	
-	virtual public void Update ()
+	virtual public void Update()
     {
 		
 	}

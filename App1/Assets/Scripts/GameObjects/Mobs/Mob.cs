@@ -51,12 +51,16 @@ public class Mob : DestructibleObject {
 
 
     //Mob firing
+    public Transform fireTransform;
     public Rigidbody projectileType;
-	public Transform fireTransformLeft;
-	public Transform fireTransformRight;
-	public float fireSpeed;
+    public float burstNumber;
+    public float burstFireRate;
 	public float fireRate;
-	public float minSpeedMultiplier;//varies torpedo speed
+    public float accuracyVariation;
+    
+
+    private float timeSinceLastFire;
+	
 
 	// Use this for initialization
 	override public void Start ()
@@ -71,7 +75,6 @@ public class Mob : DestructibleObject {
 	override public void Update ()
 	{
 		base.Update ();
-		handleFiring ();
 	}
 
 	override public void FixedUpdate()
@@ -260,11 +263,29 @@ public class Mob : DestructibleObject {
 
 
     /*Firing*/
-    private void handleFiring(){
-	
+    public void handleFiring()
+    {
+	    if (Time.time > timeSinceLastFire)
+        {
+            StartCoroutine(handleFiringCoroutine());
+        }
 	}
 
-	public void tryFire(){
-	
-	}
+    private IEnumerator handleFiringCoroutine()
+    {
+        Vector3 rotation = fireTransform.TransformDirection(fireTransform.forward);
+        rotation = fireTransform.rotation.eulerAngles;
+        rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
+        Instantiate(projectileType, fireTransform.position, Quaternion.Euler(rotation));
+        for (int i = 0; i < burstNumber - 1; i++)
+        {
+            yield return new WaitForSeconds(burstFireRate);
+
+            rotation = fireTransform.TransformDirection(fireTransform.forward);
+            rotation = fireTransform.rotation.eulerAngles;
+            rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
+            Instantiate(projectileType, fireTransform.position, Quaternion.Euler(rotation));
+        }
+        timeSinceLastFire = Time.time + fireRate;
+    }
 }

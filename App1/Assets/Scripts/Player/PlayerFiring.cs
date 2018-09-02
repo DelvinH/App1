@@ -15,7 +15,8 @@ public class PlayerFiring : MonoBehaviour
 	public Rigidbody projectileType;
 	public Transform fireTransformLeft;
 	public Transform fireTransformRight;
-    public float fireRate;//shots per second
+    public float fireRate;
+    public float accuracyVariation;
 
     private void OnEnable()
     {
@@ -61,20 +62,25 @@ public class PlayerFiring : MonoBehaviour
 	/*Firing*/
 	private void handleFiring()
     {
-        if (Time.time > timeForNextFire)
+        playerMob.handleFiring();
+        /*if (Time.time > timeForNextFire)
         {
-            timeForNextFire = Time.time + 1 / fireRate;
+            timeForNextFire = Time.time + fireRate;
             if (rightFire)
             {
-                Debug.Log("fireRight");
-                Instantiate(projectileType, fireTransformRight.position, fireTransformRight.rotation);
+                Vector3 rotation = fireTransformRight.TransformDirection(fireTransformRight.forward);
+                rotation = fireTransformRight.rotation.eulerAngles;
+                rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
+                Instantiate(projectileType, fireTransformRight.position, Quaternion.Euler(rotation));
             } else
             {
-                Debug.Log("fireLeft");
-                Instantiate(projectileType, fireTransformLeft.position, fireTransformLeft.rotation);
+                Vector3 rotation = fireTransformLeft.TransformDirection(fireTransformLeft.forward);
+                rotation = fireTransformLeft.rotation.eulerAngles;
+                rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
+                Instantiate(projectileType, fireTransformLeft.position, Quaternion.Euler(rotation));
             }
             rightFire = !rightFire;
-        }
+        }*/
 
 		//leftIsReady = Time.time - timeSinceLastFireLeft > 1 / fireRate;
 		//rightIsReady = Time.time - timeSinceLastFireRight > 1 / fireRate;

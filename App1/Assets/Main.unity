@@ -736,7 +736,8 @@ MonoBehaviour:
     type: 2}
   fireTransformLeft: {fileID: 2071053082}
   fireTransformRight: {fileID: 1956655238}
-  fireRate: 3
+  fireRate: 0.1
+  accuracyVariation: 1
 --- !u!136 &1632113584
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -781,13 +782,13 @@ MonoBehaviour:
   atSurface: 1
   changeDepthTime: 2
   depthChanged: 1
+  fireTransform: {fileID: 2071053082}
   projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
     type: 2}
-  fireTransformLeft: {fileID: 2071053082}
-  fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 20
-  fireRate: 5
-  minSpeedMultiplier: 0.9
+  burstNumber: 1
+  burstFireRate: 0
+  fireRate: 0.1
+  accuracyVariation: 1
   movementRotationScalesWithVelocity: 1
   movementBackwardsMaxVelocity: 4
 --- !u!1 &1713597102

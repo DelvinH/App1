@@ -12,6 +12,7 @@ public class PlayerTorpedoController : MonoBehaviour
 	public float maxLifetime;
 	public float explosionRadius;
 	public float torpedoSpeed;
+    public float minSpeedMultiplier;
     public bool homing;
     public bool doesDOT;
     public float timeForDOT;
@@ -22,6 +23,8 @@ public class PlayerTorpedoController : MonoBehaviour
     void Start()
     {
         torpedoDamage = Random.Range(minDamage, maxDamage);
+        torpedoSpeed *= minSpeedMultiplier;
+        Destroy(gameObject, maxLifetime);
     }
 
     
@@ -38,10 +41,7 @@ public class PlayerTorpedoController : MonoBehaviour
         rigidbody.MovePosition(rigidbody.position + transform.forward * torpedoSpeed * Time.deltaTime);
     }
 
-    public void Activate(){
-		Destroy(gameObject, maxLifetime);
-	}
-
+    
     private void OnTriggerEnter(Collider other)
     {
 		if (!gameObject.activeSelf || other.gameObject.layer == ignoreMaskNumber)

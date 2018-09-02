@@ -22759,6 +22759,7 @@ MonoBehaviour:
   maxLifetime: 10
   explosionRadius: 1
   torpedoSpeed: 20
+  minSpeedMultiplier: 0.9
   homing: 0
   doesDOT: 1
   timeForDOT: 0.3
