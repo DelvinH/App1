@@ -42,10 +42,10 @@ public class Mob : DestructibleObject {
     protected float movementRotationReference = 0.0f;           //reference used for Mathf.SmoothDamp
 
     //Changing depth movement
-    public bool atSurface = true;
     public float changeDepthTime = 1.0f;
     public float depthChanged = 1.0f;
 
+    protected bool atSurface = true;
     protected bool changingDepth = false;
     protected float changeDepthSpeed = 1.0f;//This equals depthChanged / changeDepthTime
 
@@ -53,7 +53,8 @@ public class Mob : DestructibleObject {
     //Mob firing
     public Transform fireTransform;
     public Rigidbody projectileType;
-    public float burstNumber;
+    public float burstNumber;//Number of shots fired one after another
+    public float spreadNumber;//Number of shots fired at the same time
     public float burstFireRate;
 	public float fireRate;
     public float accuracyVariation;
@@ -250,12 +251,12 @@ public class Mob : DestructibleObject {
     }
 
     private void RestrainMovement()//Status: Working
-    {//makes sure mob is on game plane (y=0 for surface, y=-1 for submerged)
-        if (Mathf.Abs(transform.position.y + 1f) < Mathf.Abs(transform.position.y) && !changingDepth)//closer to -1
+    {//makes sure mob is on game plane (y=0 for surface, y=depthChanged for submerged)
+        if (Mathf.Abs(transform.position.y + depthChanged) < Mathf.Abs(transform.position.y) && !changingDepth)//closer to lower depth
         {
-            transform.position = new Vector3(transform.position.x, -1, transform.position.z);
+            transform.position = new Vector3(transform.position.x, -depthChanged, transform.position.z);
         }
-        else if (Mathf.Abs(transform.position.y + 1f) > Mathf.Abs(transform.position.y) && !changingDepth)//closer to 0
+        else if (Mathf.Abs(transform.position.y + depthChanged) > Mathf.Abs(transform.position.y) && !changingDepth)//closer to 0
         {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
@@ -265,6 +266,10 @@ public class Mob : DestructibleObject {
     /*Firing*/
     public void handleFiring()
     {
+        if (fireRate < burstFireRate)
+        {
+            throw new System.Exception("Fire rate must be greater than burst rate!");
+        }
 	    if (Time.time > timeSinceLastFire)
         {
             StartCoroutine(handleFiringCoroutine());
@@ -273,19 +278,37 @@ public class Mob : DestructibleObject {
 
     private IEnumerator handleFiringCoroutine()
     {
+
+        timeSinceLastFire = Time.time + fireRate;//timeSinceLastFire needs to be updated several times to prevent multiple bursts from firing simultaneously
         Vector3 rotation = fireTransform.TransformDirection(fireTransform.forward);
-        rotation = fireTransform.rotation.eulerAngles;
-        rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
-        Instantiate(projectileType, fireTransform.position, Quaternion.Euler(rotation));
+        if (!changingDepth)
+        {
+            for (int i = 0; i < spreadNumber; i++)
+            {
+                rotation = fireTransform.rotation.eulerAngles;
+                rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
+                Instantiate(projectileType, fireTransform.position, Quaternion.Euler(rotation));
+            }   
+        }
+            
+            
+        
+        
         for (int i = 0; i < burstNumber - 1; i++)
         {
             yield return new WaitForSeconds(burstFireRate);
-
-            rotation = fireTransform.TransformDirection(fireTransform.forward);
-            rotation = fireTransform.rotation.eulerAngles;
-            rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
-            Instantiate(projectileType, fireTransform.position, Quaternion.Euler(rotation));
+            if (!changingDepth)
+            {
+                for (int j = 0; j < spreadNumber; j++)
+                {
+                    rotation = fireTransform.rotation.eulerAngles;
+                    rotation = new Vector3(rotation.x, rotation.y + Random.Range(accuracyVariation, -accuracyVariation), rotation.z);
+                    Instantiate(projectileType, fireTransform.position, Quaternion.Euler(rotation));
+                }
+            }
+            timeSinceLastFire = Time.time + fireRate;
         }
         timeSinceLastFire = Time.time + fireRate;
+        Debug.Log(timeSinceLastFire);
     }
 }
