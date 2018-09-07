@@ -324,4 +324,21 @@ public class Mob : DestructibleObject {
     {
         return movementForwardValue / movementForwardMaxVelocity;
     }
+
+
+
+	//AI helpers
+	public double distanceToPlayer(){		//straight distance to player ignoring all obstacles
+		GameObject player = Globals.ThePlayer.gameObject;
+		GameObject us = gameObject;
+		Transform theirs = player.transform;
+		Transform ours = us.transform;
+		double dx = theirs.right - ours.right;
+		double dy = theirs.up - ours.up;
+		double dz = theirs.forward - ours.forward;
+		double distance = Mathf.Sqrt (dx * dx + dy * dy + dz * dz);
+		return distance;
+	}
+
+
 }
