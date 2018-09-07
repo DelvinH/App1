@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -264,16 +264,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114471420347000616, guid: 4335ff2632cb16749b9ccc869423f289,
-        type: 2}
-      propertyPath: torpedoSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114471420347000616, guid: 4335ff2632cb16749b9ccc869423f289,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4335ff2632cb16749b9ccc869423f289, type: 2}
   m_IsPrefabAsset: 0
@@ -390,12 +380,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atSurface: 1
-  changeDepthSpeed: 0.5
-  changeDepthTime: 2
-  health: 0
   maxHealth: 1000
-  startOnFullHealth: 1
+  health: 0
 --- !u!1 &915075828
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,12 +495,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atSurface: 1
-  changeDepthSpeed: 0.5
-  changeDepthTime: 2
-  health: 0
   maxHealth: 1000
-  startOnFullHealth: 1
+  health: 0
 --- !u!1 &928552591
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,13 +553,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b650e5b319354c459c5d93daa0b7591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  positionDampSpeed: 30
-  angleDampSpeed: 100
   target: {fileID: 1632113579}
-  cameraDistance: 2
-  cameraAngle: 15
-  cameraHeight: 0.5
-  cameraZoomDistance: 0.03
+  cameraDistance: 4
+  cameraAngle: 20
+  cameraHeight: 1.5
 --- !u!4 &1121480467
 Transform:
   m_ObjectHideFlags: 0
@@ -592,11 +571,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &1535057335 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
-    type: 2}
-  m_PrefabInternal: {fileID: 278977138}
 --- !u!1 &1604101289
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,7 +652,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1604101289}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 5, y: 1, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -758,11 +732,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0e05b684876e449b8b1f5699b55cb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileType: {fileID: 1535057335}
+  projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
+    type: 2}
   fireTransformLeft: {fileID: 2071053082}
   fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 2
-  fireRate: 1
+  fireRate: 0.1
+  accuracyVariation: 1
 --- !u!136 &1632113584
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -787,16 +762,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82936a6264943b049850ef9cba95b9d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atSurface: 1
-  changeDepthSpeed: 0.5
-  changeDepthTime: 2
-  health: 0
   maxHealth: 0
-  startOnFullHealth: 0
+  health: 0
   canMoveForward: 1
   movementForwardDamped: 1
   movementForwardMaxPower: 1
-  movementForwardMaxVelocity: 5
+  movementForwardMaxVelocity: 8
   timeToMaxVelocityForward: 0.3
   canMoveStrafe: 0
   movementStrafeDamped: 0
@@ -805,18 +776,21 @@ MonoBehaviour:
   timeToMaxVelocityStrafe: 0.5
   canMoveRotatation: 1
   movementRotationDamped: 1
-  movementRotationScalesWithVelocity: 1
-  movementRotationMinTurnVelocity: 15
   movementRotationMaxPower: 1
-  movementRotationMaxVelocity: 60
+  movementRotationMaxVelocity: 80
   timeToMaxVelocityRotation: 0.2
+  atSurface: 1
+  changeDepthTime: 2
+  depthChanged: 1
+  fireTransform: {fileID: 2071053082}
   projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
     type: 2}
-  fireTransformLeft: {fileID: 2071053082}
-  fireTransformRight: {fileID: 1956655238}
-  fireSpeed: 10
-  fireRate: 10
-  minSpeedMultiplier: 0.9
+  burstNumber: 1
+  burstFireRate: 0
+  fireRate: 0.1
+  accuracyVariation: 1
+  movementRotationScalesWithVelocity: 1
+  movementBackwardsMaxVelocity: 4
 --- !u!1 &1713597102
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,12 +904,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atSurface: 1
-  changeDepthSpeed: 0.5
-  changeDepthTime: 2
-  health: 0
   maxHealth: 1000
-  startOnFullHealth: 1
+  health: 0
 --- !u!1 &1956655237
 GameObject:
   m_ObjectHideFlags: 0
@@ -1143,12 +1113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a7cf2051b33db0498ff9a23a63fc039, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  atSurface: 1
-  changeDepthSpeed: 0.5
-  changeDepthTime: 2
-  health: 0
   maxHealth: 1000
-  startOnFullHealth: 1
+  health: 0
 --- !u!1 &2071053081
 GameObject:
   m_ObjectHideFlags: 0
@@ -1297,8 +1263,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2123174091}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1121480467}

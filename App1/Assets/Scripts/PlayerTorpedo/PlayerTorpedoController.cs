@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class PlayerTorpedoController : MonoBehaviour
 {
-	public LayerMask torpedoMask;
+    public Rigidbody rigidbody;
+    public LayerMask torpedoMask;
     public float ignoreMaskNumber;
 	public float maxDamage;
 	public float minDamage;
 	public float maxLifetime;
 	public float explosionRadius;
 	public float torpedoSpeed;
+    public float minSpeedMultiplier;
     public bool homing;
+    public bool doesDOT;
+    public float timeForDOT;
 
     private float torpedoDamage;
 
@@ -19,6 +23,8 @@ public class PlayerTorpedoController : MonoBehaviour
     void Start()
     {
         torpedoDamage = Random.Range(minDamage, maxDamage);
+        torpedoSpeed *= minSpeedMultiplier;
+        Destroy(gameObject, maxLifetime);
     }
 
     
@@ -30,10 +36,12 @@ public class PlayerTorpedoController : MonoBehaviour
         }
     }
 
-	public void Activate(){
-		Destroy(gameObject, maxLifetime);
-	}
+    private void FixedUpdate()
+    {
+        rigidbody.MovePosition(rigidbody.position + transform.forward * torpedoSpeed * Time.deltaTime);
+    }
 
+    
     private void OnTriggerEnter(Collider other)
     {
 		if (!gameObject.activeSelf || other.gameObject.layer == ignoreMaskNumber)
@@ -56,7 +64,15 @@ public class PlayerTorpedoController : MonoBehaviour
 		DestructibleObject targetObject = target.GetComponent<DestructibleObject>();
 		if (!targetObject) 
 			return;
-		targetObject.TakeDamage(torpedoDamage);
+        if (doesDOT)
+        {
+            targetObject.TakeDamageOverTime(torpedoDamage, timeForDOT);
+        }
+        else
+        {
+            targetObject.TakeDamage(torpedoDamage);
+        }
+		
 	}
 
 	private void TorpedoEffects()

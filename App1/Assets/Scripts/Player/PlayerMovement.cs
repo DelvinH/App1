@@ -10,15 +10,6 @@ public class PlayerMovement : MonoBehaviour
     private float movementAxisValue;
     private float turnAxisValue;
 
-    //private float turnVelocity;
-    //private float turnValue;
-
-    //public float moveAcceleration;
-    //public float turnAcceleration;
-    //public float moveSpeed;
-    //public float turnSpeed;
-    //public float minTurnSpeed;
-
     private void Awake()
     {
 		playerMob = gameObject.GetComponent<Mob>();
@@ -28,8 +19,6 @@ public class PlayerMovement : MonoBehaviour
     {
         movementAxisName = "Vertical";
         turnAxisName = "Horizontal";
-
-        //turnValue = 0f;
     }
 
     /*private void OnDisable()
@@ -45,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
         rigidbody.isKinematic = true;
     }*/
 
-    private void Update()
+    private void Update()//Add audio
     {
         movementAxisValue = Input.GetAxis(movementAxisName);
         turnAxisValue = Input.GetAxis(turnAxisName);
@@ -56,46 +45,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-		Move ();
-        ToggleDepth();
+        ChangeDepth();
     }
 
-    private void Move()
-    {
-
-		if (playerMob.atSurface)
-        {
-            //SurfaceAudio
-        }
-		else if (!playerMob.atSurface)
-        {
-            //SubmergedAudio
-        }
-
-        //Debug.Log(rigidbody.velocity.magnitude);
-    }
-
-    private void Turn()
-    {
-        /*turnValue = 
-            Mathf.SmoothDamp(turnValue, 
-			turnAxisValue * Mathf.Clamp(turnSpeed * (playerMob.velocity.magnitude / moveSpeed), minTurnSpeed, turnSpeed * (playerMob.velocity.magnitude / moveSpeed)),
-            ref turnVelocity, 1 / turnAcceleration);
-        Quaternion turnRotation = Quaternion.Euler(0f, turnValue, 0f);
-        rigidbody.MoveRotation(playerMob.rotation * turnRotation);*/
-
-        //Debug.Log(turn + "turn");
-        //Debug.Log(turnAxisValue * turnSpeed * (rigidbody.velocity.magnitude / moveSpeed));
-        //Debug.Log(turnRotation.eulerAngles);
-        //Debug.Log(rigidbody.rotation.eulerAngles;  
-    }
-    private void ToggleDepth()
+    private void ChangeDepth()
     {
 		if (Input.GetButton("Fire2"))
         {
-			playerMob.ToggleDepth ();
+			playerMob.ChangeDepth();
         }
-        
     }
 
 }
