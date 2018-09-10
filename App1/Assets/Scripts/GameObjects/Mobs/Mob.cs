@@ -7,6 +7,7 @@ public enum MobFactions {Neutral, Player, Hostile};
 public class Mob : DestructibleObject {
 
     //Default values are included
+	protected Rigidbody rigidbody;
 
     //Forward/Backward movement
     public bool canMoveForward = true;                  //can move forward/backward
@@ -63,10 +64,18 @@ public class Mob : DestructibleObject {
     private float timeSinceLastFire;
 	
 
+	//Submerging
+	public bool atSurface = true;
+	private bool changingDepth = false;
+	public float changeDepthSpeed = 0.5f;
+	public float changeDepthTime = 2f;
+
+
 	// Use this for initialization
 	override public void Start ()
 	{
 		base.Start ();
+		rigidbody = gameObject.GetComponent<Rigidbody> ();
         //InitializeFactions ();
 
         changeDepthSpeed = depthChanged / changeDepthTime;
@@ -81,6 +90,7 @@ public class Mob : DestructibleObject {
 	override public void FixedUpdate()
     {
 		handleMovement ();
+		RestrainMovement ();
 		base.FixedUpdate ();
         RestrainMovement();
 	}
@@ -311,4 +321,21 @@ public class Mob : DestructibleObject {
         timeSinceLastFire = Time.time + fireRate;
         Debug.Log(timeSinceLastFire);
     }
+
+
+
+	//AI helpers
+	public double distanceToPlayer(){		//straight distance to player ignoring all obstacles
+		GameObject player = Globals.ThePlayer.gameObject;
+		GameObject us = gameObject;
+		Transform theirs = player.transform;
+		Transform ours = us.transform;
+		double dx = theirs.right - ours.right;
+		double dy = theirs.up - ours.up;
+		double dz = theirs.forward - ours.forward;
+		double distance = Mathf.Sqrt (dx * dx + dy * dy + dz * dz);
+		return distance;
+	}
+
+
 }
