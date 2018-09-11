@@ -42,15 +42,6 @@ public class Mob : DestructibleObject {
     protected float movementRotationValue = 0.0f;               //current angular velocity (degrees)
     protected float movementRotationReference = 0.0f;           //reference used for Mathf.SmoothDamp
 
-    //Changing depth movement
-    public bool atSurface = true;
-    public float changeDepthTime = 1.0f;
-    public float depthChanged = 1.0f;
-
-    protected bool changingDepth = false;
-    protected float changeDepthSpeed = 1.0f;//This equals depthChanged / changeDepthTime
-
-
     //Mob firing
     public Transform fireTransform;
     public Rigidbody projectileType;
@@ -77,7 +68,6 @@ public class Mob : DestructibleObject {
 		rigidbody = gameObject.GetComponent<Rigidbody> ();
         //InitializeFactions ();
 
-        changeDepthSpeed = depthChanged / changeDepthTime;
 	}
 
 	// Update is called once per frame
@@ -302,16 +292,44 @@ public class Mob : DestructibleObject {
 
 
 	//AI helpers
-	public double distanceToPlayer(){		//straight distance to player ignoring all obstacles
-		GameObject player = Globals.ThePlayer.gameObject;
-		GameObject us = gameObject;
-		Transform theirs = player.transform;
-		Transform ours = us.transform;
-		double dx = theirs.right - ours.right;
-		double dy = theirs.up - ours.up;
-		double dz = theirs.forward - ours.forward;
-		double distance = Mathf.Sqrt (dx * dx + dy * dy + dz * dz);
-		return distance;
+	public float distanceToPlayer(){		//straight distance to player ignoring all obstacles
+		Vector3 diff = getVectorToPlayer();
+		return diff.magnitude;
+	}
+
+	public float angleToPlayer(){
+		return getTransformToPlayer ().eulerAngles.y;
+	}
+
+	public float playerCurrentSpeed(){
+		return Globals.ThePlayer.movementForwardValue;
+	}
+
+	public Transform getTransformToPlayer(){
+		GameObject theirs = Globals.ThePlayer.gameObject;
+		return theirs.Transform - gameObject.Transform;
+	}
+
+	public Vector3 getVectorToPlayer(){
+		return getTransformToPlayer ().position;
+	}
+
+	public string directionToPlayer(){
+		float angle = angleToPlayer ();
+		string retval = "ERROR";
+		if (315 < angle < 45) {			//needs to be made into an enum later
+			retval = "FORWARD";
+		}
+		if (45 < angle < 135) {
+			retval = "RIGHT";
+		}
+		if (135 < angle < 225) {
+			retval = "BEHIND";
+		}
+		if (225 < angle < 315) {
+			retval = "LEFT";
+		}
+		return "ERROR";
 	}
 
 
