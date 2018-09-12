@@ -779,15 +779,15 @@ MonoBehaviour:
   movementRotationMaxPower: 1
   movementRotationMaxVelocity: 80
   timeToMaxVelocityRotation: 0.2
-  atSurface: 1
   changeDepthTime: 2
   depthChanged: 1
   fireTransform: {fileID: 2071053082}
   projectileType: {fileID: 54184349913173994, guid: 4335ff2632cb16749b9ccc869423f289,
     type: 2}
-  burstNumber: 1
-  burstFireRate: 0
-  fireRate: 0.1
+  burstNumber: 3
+  spreadNumber: 3
+  burstFireRate: 0.1
+  fireRate: 1
   accuracyVariation: 1
   movementRotationScalesWithVelocity: 1
   movementBackwardsMaxVelocity: 4
