@@ -64,11 +64,11 @@ public class Mob : DestructibleObject {
     private float timeSinceLastFire;
 	
 
-	//Submerging
+	/*//Submerging
 	public bool atSurface = true;
 	private bool changingDepth = false;
 	public float changeDepthSpeed = 0.5f;
-	public float changeDepthTime = 2f;
+	public float changeDepthTime = 2f;*/
 
 
 	// Use this for initialization
