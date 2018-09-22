@@ -329,35 +329,32 @@ public class Mob : DestructibleObject {
 	}
 
 	public float angleToPlayer(){
-		return getTransformToPlayer ().eulerAngles.y;
+		Vector3 vector = getVectorToPlayer ();
+		return Mathf.Atan2(vector.z, vector.x)
 	}
 
 	public float playerCurrentSpeed(){
 		return Globals.ThePlayer.movementForwardValue;
 	}
 
-	public Transform getTransformToPlayer(){
-		GameObject theirs = Globals.ThePlayer.gameObject;
-		return theirs.Transform - gameObject.Transform;
-	}
-
 	public Vector3 getVectorToPlayer(){
-		return getTransformToPlayer ().position;
+		GameObject theirs = Globals.ThePlayer.gameObject;
+		return theirs.transform.position - gameObject.transform.position;
 	}
 
 	public string directionToPlayer(){
 		float angle = angleToPlayer ();
 		string retval = "ERROR";
-		if (315 < angle < 45) {			//needs to be made into an enum later
+		if (315 < angle && angle < 45) {			//needs to be made into an enum later
 			retval = "FORWARD";
 		}
-		if (45 < angle < 135) {
+		if (45 < angle && angle < 135) {
 			retval = "RIGHT";
 		}
-		if (135 < angle < 225) {
+		if (135 < angle && angle < 225) {
 			retval = "BEHIND";
 		}
-		if (225 < angle < 315) {
+		if (225 < angle && angle < 315) {
 			retval = "LEFT";
 		}
 		return "ERROR";
