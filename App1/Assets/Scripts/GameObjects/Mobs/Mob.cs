@@ -9,7 +9,6 @@ public enum Cardinal {North, South, East, West};
 public class Mob : DestructibleObject {
 
     //Default values are included
-	protected Rigidbody rigidbody;
 
     //Forward/Backward movement
     public bool canMoveForward = true;                  //can move forward/backward
@@ -60,23 +59,16 @@ public class Mob : DestructibleObject {
     public float burstFireRate;
 	public float fireRate;
     public float accuracyVariation;
-    
 
-    private float timeSinceLastFire;
+    protected float timeSinceLastFire;
 	
 
-	/*//Submerging
-	public bool atSurface = true;
-	private bool changingDepth = false;
-	public float changeDepthSpeed = 0.5f;
-	public float changeDepthTime = 2f;*/
 
 
 	// Use this for initialization
 	override public void Start ()
 	{
 		base.Start ();
-		rigidbody = gameObject.GetComponent<Rigidbody> ();
         //InitializeFactions ();
 
 	}
@@ -99,6 +91,10 @@ public class Mob : DestructibleObject {
 		factions.Clear ();
 		factions.Add (MobFactions.Neutral);
 	}*/
+
+
+
+
 
 
 
@@ -158,8 +154,8 @@ public class Mob : DestructibleObject {
         }
         if (canMoveForward)
         {
-            Vector3 movementForwardVector = transform.forward * movementForwardValue * Time.deltaTime;
-            rigidbody.MovePosition(rigidbody.position + movementForwardVector);
+            Vector3 movementForwardVector = rigidbody.position + transform.forward * movementForwardValue * Time.deltaTime;
+            rigidbody.MovePosition(movementForwardVector);
         }
     }
 
@@ -229,6 +225,7 @@ public class Mob : DestructibleObject {
         Vector3 movement;
         float timeAtStart = Time.time;
         changingDepth = true;
+        changeDepthSpeed = depthChanged / changeDepthTime;
 
         if (atSurface)
         {
@@ -271,6 +268,12 @@ public class Mob : DestructibleObject {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
     }
+
+
+
+
+
+
 
 
     /*Firing*/
@@ -319,60 +322,70 @@ public class Mob : DestructibleObject {
             timeSinceLastFire = Time.time + fireRate;
         }
         timeSinceLastFire = Time.time + fireRate;
-        Debug.Log(timeSinceLastFire);
+        
     }
 
 
 
+
+
+
+
+
+
 	//AI helpers
-	public float distanceToPlayer(){		//straight distance to player ignoring all obstacles
-		Vector3 diff = getVectorToPlayer();
-		return diff.magnitude;
+	public float distanceToPlayer()
+    {		//straight distance to player ignoring all obstacles
+		Vector3 vector = getVectorToPlayer();
+        float distance = vector.magnitude;
+
+		return distance;
 	}
 
-	public float angleToPlayer(){
-		Vector3 vector = getVectorToPlayer ();
-        return Mathf.Atan2(vector.z, vector.x);
-		return Mathf.Atan2 (vector.z, vector.x);
+	public float angleToPlayer()
+    {          //returns bearing to player
+		Vector3 vector = getVectorToPlayer();
+        float theta = Mathf.Atan2(vector.z, vector.x);
+        
+        if (theta < 0)
+            theta += 2 * Mathf.PI;
+        
+        return theta;
 	}
 
-	public float relativePlayerSpeed(){
-		return playerCurrentSpeed() - movementForwardValue;
+	public Vector3 relativePlayerSpeed()
+    {   //returns speed of player relative to mob
+        Mob playerMob = Globals.ThePlayer.GetComponent<Mob>();
+        Debug.Log(transform.TransformVector(new Vector3 (1, 0, 0)));
+        return transform.TransformVector(playerMob.getVelocity()) - transform.TransformVector(getVelocity());
 	}
 
-	public float relativePlayerAngle(){
+	public float relativePlayerAngle()
+    {  //returns angle of velocity of player relative to mob
 		float their_angle = Mathf.Ceil (angleToPlayer());
 		float our_angle = gameObject.transform.eulerAngles.y;
 		return their_angle - our_angle;
+
 	}
 
-	public float playerCurrentSpeed(){
-		return Globals.ThePlayer.movementForwardValue;
-	}
+	
 
-	public Vector3 getVectorToPlayer(){
-		GameObject theirs = Globals.ThePlayer.gameObject;
-		return theirs.transform.position - gameObject.transform.position;
-	}
-
-	public string directionToPlayer(){
-		float angle = angleToPlayer ();
-		string retval = "ERROR";
-		if (315 < angle && angle < 45) {			//needs to be made into an enum later
-			retval = "FORWARD";
-		}
-		if (45 < angle && angle < 135) {
-			retval = "RIGHT";
-		}
-		if (135 < angle && angle < 225) {
-			retval = "BEHIND";
-		}
-		if (225 < angle && angle < 315) {
-			retval = "LEFT";
-		}
-		return "ERROR";
-		return retval;
+	public Vector3 getVectorToPlayer()
+    {
+		GameObject player = Globals.ThePlayer.gameObject;
+		return player.transform.position - gameObject.transform.position;
 	}
 
 
+
+
+
+
+
+
+    //Return functions
+    public Vector3 getVelocity()
+    {
+        return new Vector3(movementForwardValue, 0f, movementStrafeValue);
+    }
 }

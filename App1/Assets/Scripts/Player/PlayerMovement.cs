@@ -41,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
 
         playerMob.setPercentForwardPower(movementAxisValue);
         playerMob.setPercentRotationPower(turnAxisValue);
+        
+        
     }
 
     private void FixedUpdate()
