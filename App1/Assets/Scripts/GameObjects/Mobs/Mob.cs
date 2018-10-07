@@ -330,7 +330,6 @@ public class Mob : DestructibleObject {
 
 	public float angleToPlayer(){
 		Vector3 vector = getVectorToPlayer ();
-		return Mathf.Atan2(vector.z, vector.x)
         return Mathf.Atan2(vector.z, vector.x);
 	}
 
