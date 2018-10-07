@@ -4,6 +4,8 @@ using UnityEngine;
 
 public enum MobFactions {Neutral, Player, Hostile};
 
+public enum Cardinal {North, South, East, West};
+
 public class Mob : DestructibleObject {
 
     //Default values are included
@@ -331,6 +333,17 @@ public class Mob : DestructibleObject {
 	public float angleToPlayer(){
 		Vector3 vector = getVectorToPlayer ();
         return Mathf.Atan2(vector.z, vector.x);
+		return Mathf.Atan2 (vector.z, vector.x);
+	}
+
+	public float relativePlayerSpeed(){
+		return playerCurrentSpeed() - movementForwardValue;
+	}
+
+	public float relativePlayerAngle(){
+		float their_angle = Mathf.Ceil (angleToPlayer());
+		float our_angle = gameObject.transform.eulerAngles.y;
+		return their_angle - our_angle;
 	}
 
 	public float playerCurrentSpeed(){
@@ -358,6 +371,7 @@ public class Mob : DestructibleObject {
 			retval = "LEFT";
 		}
 		return "ERROR";
+		return retval;
 	}
 
 
